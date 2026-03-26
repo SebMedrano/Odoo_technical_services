@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- LIST VIEW: shows worktags as rows in a table -->
+    <record id="view_service_worktag_list" model="ir.ui.view">
+        <field name="name">service.worktag.list</field>
+        <field name="model">service.worktag</field>
+        <field name="arch" type="xml">
+            <list string="Worktags">
+                <!-- Each 'field' tag is a column in the list -->
+                <field name="code"/>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- FORM VIEW: the detail screen for a single worktag -->
+    <record id="view_service_worktag_form" model="ir.ui.view">
+        <field name="name">service.worktag.form</field>
+        <field name="model">service.worktag</field>
+        <field name="arch" type="xml">
+            <form string="Worktag">
+                <sheet>
+                    <!-- group tag arranges fields in a two-column layout -->
+                    <group>
+                        <field name="code"/>
+                        <field name="name"/>
+                        <field name="partner_id"/>
+                        <field name="active"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- SEARCH VIEW: defines filter and search options for the list -->
+    <record id="view_service_worktag_search" model="ir.ui.view">
+        <field name="name">service.worktag.search</field>
+        <field name="model">service.worktag</field>
+        <field name="arch" type="xml">
+            <search string="Search Worktags">
+                <!-- These fields are searched when you type in the search bar -->
+                <field name="code"/>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <!-- filter_domain adds a quick filter button -->
+                <filter string="Archived" name="inactive"
+                        domain="[('active', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- ACTION: defines what happens when you click the menu item -->
+    <record id="action_service_worktag" model="ir.actions.act_window">
+        <field name="name">Worktags</field>
+        <field name="res_model">service.worktag</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_service_worktag_search"/>
+    </record>
+
+    <!-- MENU: adds Worktags under Invoicing > Configuration -->
+    <menuitem
+        id="menu_service_worktag"
+        name="Worktags"
+        parent="account.menu_finance_configuration"
+        action="action_service_worktag"
+        sequence="100"/>
+
+</odoo>

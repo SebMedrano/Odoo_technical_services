@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--
+        We inherit the existing sale order form view and inject
+        the worktag field into it using xpath.
+
+        Position "after" the partner_id field means the worktag
+        dropdown appears directly below the Customer field —
+        a natural place for the supervisor to select it.
+    -->
+    <record id="view_sale_order_form_worktag" model="ir.ui.view">
+        <field name="name">sale.order.form.worktag</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="worktag_id"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

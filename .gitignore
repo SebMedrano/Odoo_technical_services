@@ -1,0 +1,15 @@
+# Odoo filestore and database data - never commit these
+data/
+*.pyc
+__pycache__/
+
+# VS Code workspace settings (optional - remove if you want to share these)
+.vscode/
+
+# Python virtual env if you ever create one locally
+venv/
+.env
+
+# OS files
+.DS_Store
+Thumbs.db
