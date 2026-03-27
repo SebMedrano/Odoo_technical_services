@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--
+        Adds a "Worktags" tab to the customer/company form view.
+        We use xpath to find the existing notebook (tab container)
+        and append our new tab page at the end.
+    -->
+    <record id="view_partner_form_worktags" model="ir.ui.view">
+        <field name="name">res.partner.form.worktags</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Find the notebook (tab container) and add our tab at the end -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Worktags" name="worktags">
+                    <!--
+                        One2many fields render as an inline editable list.
+                        The user can add, edit and delete worktags directly
+                        from this tab without leaving the customer form.
+                    -->
+                    <field name="worktag_ids">
+                        <list editable="bottom">
+                            <!-- editable="bottom" means new rows are added
+                                 at the bottom of the list inline -->
+                            <field name="code"/>
+                            <field name="name"/>
+                            <field name="cost_centre"/>
+                            <field name="speedchart"/>
+                            <field name="status"
+                                   decoration-danger="status == 'inactive'"
+                                   decoration-success="status == 'active'"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>
