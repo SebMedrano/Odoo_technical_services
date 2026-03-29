@@ -6,23 +6,54 @@
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
+
+            <!-- Add worktag and speedchart fields below the customer field -->
             <xpath expr="//field[@name='partner_id']" position="after">
-
-                <!--
-                    worktag_id: searches and displays by primary billing code.
-                    No special context needed — code is the default _rec_name.
-                -->
                 <field name="worktag_id"/>
-
-                <!--
-                    speedchart_id: context={'show_speedchart': True} activates
-                    the _compute_display_name and _name_search overrides so
-                    this dropdown searches and displays speedchart values only.
-                -->
                 <field name="speedchart_id"
                        context="{'show_speedchart': True}"/>
-
             </xpath>
+
+            <!--
+                Dynamic domain on the product field inside order lines.
+
+                Odoo domain notation uses prefix operators:
+                '|' = OR applied to the next TWO conditions
+                '&' = AND applied to the next TWO conditions (default, often implicit)
+                '&amp;' is the XML-safe way to write '&' inside an XML attribute
+
+                The domain we want in plain English:
+                Show a product if:
+                    (A) it has NO service_client_category (regular product — always visible)
+                    OR
+                    (B) it HAS a service_client_category AND that category
+                        matches the worktag's client category
+                        (only the correct service product for this worktag)
+
+                When no worktag is selected, worktag_client_category = False.
+                Condition B becomes: category != False AND category = False
+                which is always False — so all 4 service products are hidden.
+
+                Domain written in prefix notation:
+                ['|',
+                    ('service_client_category', '=', False),          ← condition A
+                    '&',
+                        ('service_client_category', '!=', False),     ← condition B part 1
+                        ('service_client_category', '=', worktag_client_category)  ← B part 2
+                ]
+            -->
+            <xpath expr="//field[@name='order_line']//field[@name='product_id']"
+                   position="attributes">
+                <attribute name="domain">
+                    ['|',
+                     ('service_client_category', '=', False),
+                     '&amp;',
+                     ('service_client_category', '!=', False),
+                     ('service_client_category', '=', worktag_client_category),
+                    ]
+                </attribute>
+            </xpath>
+
         </field>
     </record>
 

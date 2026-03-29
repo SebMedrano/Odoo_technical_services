@@ -11,8 +11,8 @@
                 <field name="name"/>
                 <field name="cost_centre"/>
                 <field name="speedchart"/>
+                <field name="client_category"/>
                 <field name="partner_id"/>
-                <!-- decoration-danger highlights inactive rows in red -->
                 <field name="status"
                        decoration-danger="status == 'inactive'"
                        decoration-success="status == 'active'"/>
@@ -36,6 +36,7 @@
                         <group string="Details">
                             <field name="name"/>
                             <field name="partner_id"/>
+                            <field name="client_category"/>
                             <field name="status"/>
                         </group>
                     </group>
@@ -55,10 +56,21 @@
                 <field name="speedchart"/>
                 <field name="cost_centre"/>
                 <field name="partner_id"/>
+                <field name="client_category"/>
                 <filter string="Active" name="active"
                         domain="[('status', '=', 'active')]"/>
                 <filter string="Inactive" name="inactive"
                         domain="[('status', '=', 'inactive')]"/>
+                <!-- Separator adds a visual divider between filter groups -->
+                <separator/>
+                <filter string="Chemistry" name="chemistry"
+                        domain="[('client_category', '=', 'chemistry')]"/>
+                <filter string="UBC" name="ubc"
+                        domain="[('client_category', '=', 'ubc')]"/>
+                <filter string="External/Private" name="external"
+                        domain="[('client_category', '=', 'external')]"/>
+                <filter string="Department Service" name="department"
+                        domain="[('client_category', '=', 'department')]"/>
             </search>
         </field>
     </record>

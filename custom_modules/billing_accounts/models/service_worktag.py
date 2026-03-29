@@ -36,6 +36,22 @@ class ServiceWorktag(models.Model):
         string='Status',
         required=True,
         default='active',
+        help='Inactive worktags cannot be used to create invoices',
+    )
+
+    # New field: Client Category
+    # Selection field with exactly one value required.
+    # required=True means the user must pick one before saving.
+    client_category = fields.Selection(
+        selection=[
+            ('chemistry', 'Chemistry Client'),
+            ('ubc', 'UBC Client'),
+            ('external', 'External/Private Client'),
+            ('department', 'Department Service Client'),
+        ],
+        string='Client Category',
+        required=True,
+        help='Defines the type of client associated with this worktag',
     )
 
     partner_id = fields.Many2one(
@@ -44,6 +60,7 @@ class ServiceWorktag(models.Model):
         required=True,
         domain=[('is_company', '=', True)],
         ondelete='restrict',
+        help='The company this worktag belongs to',
     )
 
     _sql_constraints = [
@@ -60,12 +77,6 @@ class ServiceWorktag(models.Model):
     ]
 
     def _compute_display_name(self):
-        # In Odoo 18, _compute_display_name replaces name_get.
-        # This method sets the display_name field that Odoo uses
-        # in all Many2one dropdowns and selected value labels.
-        #
-        # When 'show_speedchart' is in context, display the speedchart
-        # value. Otherwise display the code (default _rec_name behavior).
         for record in self:
             if self.env.context.get('show_speedchart'):
                 record.display_name = record.speedchart or record.code
@@ -75,9 +86,6 @@ class ServiceWorktag(models.Model):
     @api.model
     def _name_search(self, name='', domain=None, operator='ilike',
                      limit=100, order=None):
-        # Controls what is searched when the user types in a dropdown.
-        # When 'show_speedchart' context is True, search speedchart field.
-        # When False (default), search code field (default _rec_name behavior).
         if domain is None:
             domain = []
         if self.env.context.get('show_speedchart') and name:

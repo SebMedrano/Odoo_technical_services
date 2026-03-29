@@ -1,6 +1,6 @@
 {
     'name': 'Billing Accounts (Worktags)',
-    'version': '18.0.2.0.0',
+    'version': '18.0.3.0.0',
     'summary': 'Adds worktags (billing account codes) to companies, sale orders and invoices',
     'author': 'Your Name',
     'category': 'Accounting',
@@ -8,11 +8,13 @@
         'analytic',
         'account',
         'sale',
+        'product',
     ],
     'data': [
         'security/ir.model.access.csv',
         'views/service_worktag_views.xml',
         'views/res_partner_views.xml',
+        'views/product_template_views.xml',
         'views/sale_order_views.xml',
         'views/account_move_views.xml',
     ],
