@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_repair_order_form_timesheet" model="ir.ui.view">
+        <field name="name">repair.order.form.timesheet</field>
+        <field name="model">repair.order</field>
+        <field name="inherit_id" ref="repair.view_repair_order_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//notebook" position="inside">
+                <page string="Timesheets" name="timesheets">
+                    <!--
+                        Locked when repair is done or cancelled.
+                        Editable in all other states.
+                    -->
+                    <field name="timesheet_line_ids"
+                           readonly="state in ['done', 'cancel']">
+                        <list editable="bottom">
+                            <field name="date"/>
+                            <field name="employee_id"/>
+                            <!--
+                                'name' is the description field on
+                                account.analytic.line — it maps to what
+                                we previously called 'description'.
+                            -->
+                            <field name="name" string="Description"/>
+                            <!--
+                                unit_amount is the hours field.
+                                float_time widget displays as HH:MM.
+                            -->
+                            <field name="unit_amount"
+                                   string="Hours"
+                                   widget="float_time"/>
+                            <!--
+                                repair_id is hidden in this view since
+                                it's always this repair order — no need
+                                to show it. It is set automatically.
+                            -->
+                            <field name="repair_id" column_invisible="True"/>
+                            <!--
+                                project_id and task_id are hidden too —
+                                repair lines don't use them.
+                            -->
+                            <field name="project_id" column_invisible="True"/>
+                            <field name="task_id" column_invisible="True"/>
+                        </list>
+                    </field>
+
+                    <group>
+                        <field name="total_hours"
+                               widget="float_time"
+                               readonly="1"
+                               string="Total Hours"/>
+                    </group>
+
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>
