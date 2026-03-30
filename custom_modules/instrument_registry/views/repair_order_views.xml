@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_repair_order_form_instrument" model="ir.ui.view">
+        <field name="name">repair.order.form.instrument</field>
+        <field name="model">repair.order</field>
+        <field name="inherit_id" ref="repair.view_repair_order_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Add instrument_id directly before product_id -->
+            <xpath expr="//field[@name='product_id'][@readonly]" position="before">
+                <field name="instrument_id"
+                       readonly="state in ['cancel', 'done']"/>
+            </xpath>
+
+            <!-- Hide product_id completely — instrument replaces it -->
+            <xpath expr="//field[@name='product_id'][@readonly]" position="attributes">
+                <attribute name="invisible">1</attribute>
+                <attribute name="required">0</attribute>
+            </xpath>
+
+            <!-- Hide lot_id — only relevant when product_id is set -->
+            <xpath expr="//field[@name='lot_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+                <attribute name="required">0</attribute>
+            </xpath>
+
+            <!-- Hide quantity label -->
+            <xpath expr="//label[@for='product_qty']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <!-- Hide quantity row -->
+            <xpath expr="//div[@class='o_row'][field[@name='product_qty']]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>
