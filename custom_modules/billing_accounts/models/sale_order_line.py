@@ -8,10 +8,8 @@ SERVICE_CATEGORIES = {'chemistry', 'ubc', 'external', 'department'}
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
-    # Related field that reads the client_category from the sale order's
-    # worktag. This makes it accessible in the view domain on product_id
-    # so the product dropdown can be filtered dynamically.
-    # store=False means it is computed on the fly, not stored in the database.
+    # Related field reading the client_category from the worktag.
+    # Used by the product_id domain filter in the view.
     worktag_client_category = fields.Selection(
         related='order_id.worktag_id.client_category',
         selection=[
@@ -32,7 +30,6 @@ class SaleOrderLine(models.Model):
         if not product_category:
             return
 
-        # Rule 1: Worktag must be selected first
         if not self.order_id.worktag_id:
             self.product_id = False
             return {
@@ -45,7 +42,6 @@ class SaleOrderLine(models.Model):
                 }
             }
 
-        # Rule 2: Product category must match worktag client category
         worktag_category = self.order_id.worktag_id.client_category
         if product_category != worktag_category:
             category_labels = dict(
@@ -65,7 +61,6 @@ class SaleOrderLine(models.Model):
                 }
             }
 
-        # Rule 3: Only one of the 4 service products per sale order
         existing = self.order_id.order_line.filtered(
             lambda l: (
                 l != self

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_project_task_form_parts" model="ir.ui.view">
+        <field name="name">project.task.form.parts</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+
+            <!-- Add Parts tab inside the existing notebook -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Parts" name="parts">
+
+                    <field name="task_part_ids">
+                        <list editable="bottom">
+                            <field name="product_id"/>
+                            <field name="description"/>
+                            <field name="quantity"/>
+                            <field name="price_unit" string="Unit Price"/>
+                            <!--
+                                sale_line_id shown as readonly so the user
+                                can see which SO line was created, but cannot
+                                change it manually.
+                            -->
+                            <field name="sale_line_id"
+                                   string="SO Line"
+                                   readonly="1"
+                                   optional="show"/>
+                        </list>
+                    </field>
+
+                    <!-- Total parts cost summary below the list -->
+                    <group>
+                        <field name="total_parts_cost"
+                               readonly="1"
+                               string="Total Parts Cost"
+                               widget="monetary"/>
+                    </group>
+
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>
