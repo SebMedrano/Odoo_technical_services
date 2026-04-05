@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_sale_order_form_opportunity" model="ir.ui.view">
+        <field name="name">sale.order.form.opportunity</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Opportunity field on the main page below Customer -->
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="opportunity_id"
+                       context="{
+                           'default_partner_id': partner_id,
+                           'default_type': 'opportunity',
+                       }"/>
+            </xpath>
+
+            <!--
+                Add an Opportunity Notes tab to the existing notebook.
+                The tab is only visible when an opportunity is linked
+                and that opportunity has notes — keeps the UI clean
+                when there are no notes to show.
+            -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Opportunity Notes"
+                      name="opportunity_notes"
+                      invisible="not opportunity_id or not opportunity_notes">
+                    <!--
+                        readonly="1" enforces the notes are not editable
+                        from the quote — to edit them the user must go
+                        to the opportunity itself via the clickable field.
+                    -->
+                    <field name="opportunity_notes" readonly="1"/>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

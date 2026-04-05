@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_repair_order_form_opportunity" model="ir.ui.view">
+        <field name="name">repair.order.form.opportunity</field>
+        <field name="model">repair.order</field>
+        <field name="inherit_id" ref="repair.view_repair_order_form"/>
+        <field name="arch" type="xml">
+
+            <!--
+                Show opportunity on the repair order below the partner field.
+                readonly=True — managed on the sale order.
+                Clicking it opens the CRM opportunity for reference.
+            -->
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="opportunity_id" readonly="1"/>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>
