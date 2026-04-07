@@ -18,3 +18,18 @@ class AccountMove(models.Model):
         readonly=True,
         store=False,
     )
+
+    # Service category read from the originating sale order.
+    service_type = fields.Selection(
+        related='invoice_line_ids.sale_line_ids.order_id.service_type',
+        selection=[
+            ('repair', 'Repair'),
+            ('manufacturing', 'Manufacturing'),
+            ('move', 'Move'),
+            ('installation', 'Installation'),
+            ('maintenance', 'Maintenance'),
+        ],
+        string='Service Type',
+        readonly=True,
+        store=False,
+    )

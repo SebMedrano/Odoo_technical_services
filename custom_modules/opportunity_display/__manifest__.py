@@ -1,13 +1,13 @@
 {
     'name': 'Opportunity Display',
-    'version': '18.0.1.0.0',
-    'summary': 'Shows the linked CRM opportunity on sale orders, invoices and repair orders',
+    'version': '18.0.2.0.0',
+    'summary': 'Shows opportunity, notes and service category on sale orders, invoices and repair orders',
     'author': 'Your Name',
     'category': 'Sales',
     'depends': [
-        'sale_crm',     # opportunity_id on sale.order
-        'account',      # account.move (invoices)
-        'repair',       # repair.order
+        'sale_crm',
+        'account',
+        'repair',
     ],
     'data': [
         'views/sale_order_views.xml',
