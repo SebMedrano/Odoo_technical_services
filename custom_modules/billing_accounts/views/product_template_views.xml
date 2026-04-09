@@ -1,17 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
     <record id="view_product_template_form_category" model="ir.ui.view">
         <field name="name">product.template.form.service.category</field>
         <field name="model">product.template</field>
         <field name="inherit_id" ref="product.product_template_form_view"/>
         <field name="arch" type="xml">
-            <!--
-                Instead of injecting next to a specific field (which breaks
-                when Odoo changes its form layout), we add a new tab to the
-                notebook. The notebook always exists on the product form and
-                is a stable anchor regardless of Odoo version.
-            -->
             <xpath expr="//notebook" position="inside">
                 <page string="Billing" name="billing_category">
                     <group>
@@ -21,5 +14,4 @@
             </xpath>
         </field>
     </record>
-
 </odoo>

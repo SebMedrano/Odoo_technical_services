@@ -10,7 +10,6 @@ class ProjectTask(models.Model):
         string='Parts',
     )
 
-    # Computed total parts cost — useful for display on the task form.
     total_parts_cost = fields.Float(
         string='Total Parts Cost',
         compute='_compute_total_parts_cost',

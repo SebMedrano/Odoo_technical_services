@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!-- LIST VIEW -->
     <record id="view_service_worktag_list" model="ir.ui.view">
         <field name="name">service.worktag.list</field>
         <field name="model">service.worktag</field>
@@ -13,14 +12,12 @@
                 <field name="speedchart"/>
                 <field name="client_category"/>
                 <field name="partner_id"/>
-                <field name="status"
-                       decoration-danger="status == 'inactive'"
-                       decoration-success="status == 'active'"/>
+                <field name="status" decoration-danger="status == 'inactive'" decoration-success="status == 'active'"/>
+                <field name="validated" widget="boolean" decoration-success="validated == True" decoration-warning="validated == False"/>
             </list>
         </field>
     </record>
 
-    <!-- FORM VIEW -->
     <record id="view_service_worktag_form" model="ir.ui.view">
         <field name="name">service.worktag.form</field>
         <field name="model">service.worktag</field>
@@ -38,6 +35,7 @@
                             <field name="partner_id"/>
                             <field name="client_category"/>
                             <field name="status"/>
+                            <field name="validated" groups="base.group_system"/>
                         </group>
                     </group>
                 </sheet>
@@ -45,7 +43,6 @@
         </field>
     </record>
 
-    <!-- SEARCH VIEW -->
     <record id="view_service_worktag_search" model="ir.ui.view">
         <field name="name">service.worktag.search</field>
         <field name="model">service.worktag</field>
@@ -57,25 +54,20 @@
                 <field name="cost_centre"/>
                 <field name="partner_id"/>
                 <field name="client_category"/>
-                <filter string="Active" name="active"
-                        domain="[('status', '=', 'active')]"/>
-                <filter string="Inactive" name="inactive"
-                        domain="[('status', '=', 'inactive')]"/>
-                <!-- Separator adds a visual divider between filter groups -->
+                <filter string="Active" name="active" domain="[('status', '=', 'active')]"/>
+                <filter string="Inactive" name="inactive" domain="[('status', '=', 'inactive')]"/>
                 <separator/>
-                <filter string="Chemistry" name="chemistry"
-                        domain="[('client_category', '=', 'chemistry')]"/>
-                <filter string="UBC" name="ubc"
-                        domain="[('client_category', '=', 'ubc')]"/>
-                <filter string="External/Private" name="external"
-                        domain="[('client_category', '=', 'external')]"/>
-                <filter string="Department Service" name="department"
-                        domain="[('client_category', '=', 'department')]"/>
+                <filter string="Validated" name="validated" domain="[('validated', '=', True)]"/>
+                <filter string="Not Validated" name="not_validated" domain="[('validated', '=', False)]"/>
+                <separator/>
+                <filter string="Chemistry" name="chemistry" domain="[('client_category', '=', 'chemistry')]"/>
+                <filter string="UBC" name="ubc" domain="[('client_category', '=', 'ubc')]"/>
+                <filter string="External/Private" name="external" domain="[('client_category', '=', 'external')]"/>
+                <filter string="Department Service" name="department" domain="[('client_category', '=', 'department')]"/>
             </search>
         </field>
     </record>
 
-    <!-- ACTION -->
     <record id="action_service_worktag" model="ir.actions.act_window">
         <field name="name">Worktags</field>
         <field name="res_model">service.worktag</field>
@@ -83,12 +75,8 @@
         <field name="search_view_id" ref="view_service_worktag_search"/>
     </record>
 
-    <!-- MENU under Invoicing > Configuration -->
-    <menuitem
-        id="menu_service_worktag"
-        name="Worktags"
+    <menuitem id="menu_service_worktag" name="Worktags"
         parent="account.menu_finance_configuration"
-        action="action_service_worktag"
-        sequence="100"/>
+        action="action_service_worktag" sequence="100"/>
 
 </odoo>

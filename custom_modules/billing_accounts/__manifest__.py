@@ -1,6 +1,6 @@
 {
     'name': 'Billing Accounts (Worktags)',
-    'version': '18.0.4.0.0',
+    'version': '18.0.5.0.0',
     'summary': 'Adds worktags (billing account codes) to companies, sale orders and invoices',
     'author': 'Your Name',
     'category': 'Accounting',

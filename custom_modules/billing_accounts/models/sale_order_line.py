@@ -1,6 +1,5 @@
 from odoo import models, fields, api
-from odoo.exceptions import UserError, ValidationError
-
+from odoo.exceptions import ValidationError
 
 SERVICE_CATEGORIES = {'chemistry', 'ubc', 'external', 'department'}
 
@@ -8,8 +7,6 @@ SERVICE_CATEGORIES = {'chemistry', 'ubc', 'external', 'department'}
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
-    # Related field reading the client_category from the worktag.
-    # Used by the product_id domain filter in the view.
     worktag_client_category = fields.Selection(
         related='order_id.worktag_id.client_category',
         selection=[
@@ -32,55 +29,25 @@ class SaleOrderLine(models.Model):
 
         if not self.order_id.worktag_id:
             self.product_id = False
-            return {
-                'warning': {
-                    'title': 'Worktag Required',
-                    'message': (
-                        'Please select a Worktag on the sale order before '
-                        'adding a labor service product.'
-                    ),
-                }
-            }
+            return {'warning': {'title': 'Worktag Required',
+                                'message': 'Please select a Worktag before adding a labor service product.'}}
 
         worktag_category = self.order_id.worktag_id.client_category
         if product_category != worktag_category:
-            category_labels = dict(
-                self.env['service.worktag']._fields['client_category'].selection
-            )
-            product_label = category_labels.get(product_category, product_category)
-            worktag_label = category_labels.get(worktag_category, worktag_category)
+            category_labels = dict(self.env['service.worktag']._fields['client_category'].selection)
             self.product_id = False
-            return {
-                'warning': {
-                    'title': 'Product Not Allowed for This Worktag',
-                    'message': (
-                        f'The selected service is for "{product_label}" clients, '
-                        f'but the worktag "{self.order_id.worktag_id.code}" '
-                        f'belongs to the "{worktag_label}" category.'
-                    ),
-                }
-            }
+            return {'warning': {'title': 'Product Not Allowed',
+                                'message': f'This service is for "{category_labels.get(product_category)}" clients '
+                                           f'but the worktag is "{category_labels.get(worktag_category)}".'}}
 
         existing = self.order_id.order_line.filtered(
-            lambda l: (
-                l != self
-                and l.product_id
-                and l.product_id.product_tmpl_id.service_client_category
-                in SERVICE_CATEGORIES
-            )
+            lambda l: l != self and l.product_id
+            and l.product_id.product_tmpl_id.service_client_category in SERVICE_CATEGORIES
         )
         if existing:
             self.product_id = False
-            return {
-                'warning': {
-                    'title': 'Only One Labor Service Allowed',
-                    'message': (
-                        f'This sale order already has a labor service: '
-                        f'"{existing[0].product_id.name}". '
-                        f'Only one labor service product is allowed per sale order.'
-                    ),
-                }
-            }
+            return {'warning': {'title': 'Only One Labor Service Allowed',
+                                'message': f'This sale order already has "{existing[0].product_id.name}".'}}
 
     @api.constrains('product_id', 'order_id')
     def _constrains_product_worktag_category(self):
@@ -90,24 +57,16 @@ class SaleOrderLine(models.Model):
             product_category = line.product_id.product_tmpl_id.service_client_category
             if not product_category:
                 continue
-
             if not line.order_id.worktag_id:
                 raise ValidationError(
-                    f'Sale order {line.order_id.name}: a labor service product '
-                    f'"{line.product_id.name}" requires a worktag to be selected first.'
-                )
-
+                    f'Labor service "{line.product_id.name}" requires a worktag on the sale order.')
             worktag_category = line.order_id.worktag_id.client_category
             if product_category != worktag_category:
-                category_labels = dict(
-                    self.env['service.worktag']._fields['client_category'].selection
-                )
-                product_label = category_labels.get(product_category, product_category)
-                worktag_label = category_labels.get(worktag_category, worktag_category)
+                category_labels = dict(self.env['service.worktag']._fields['client_category'].selection)
                 raise ValidationError(
-                    f'Product "{line.product_id.name}" is for "{product_label}" clients '
-                    f'but worktag "{line.order_id.worktag_id.code}" is "{worktag_label}".'
-                )
+                    f'Product "{line.product_id.name}" is for '
+                    f'"{category_labels.get(product_category)}" but worktag is '
+                    f'"{category_labels.get(worktag_category)}".')
 
         for line in self:
             if not line.product_id:
@@ -115,15 +74,8 @@ class SaleOrderLine(models.Model):
             if line.product_id.product_tmpl_id.service_client_category not in SERVICE_CATEGORIES:
                 continue
             duplicates = line.order_id.order_line.filtered(
-                lambda l: (
-                    l != line
-                    and l.product_id
-                    and l.product_id.product_tmpl_id.service_client_category
-                    in SERVICE_CATEGORIES
-                )
+                lambda l: l != line and l.product_id
+                and l.product_id.product_tmpl_id.service_client_category in SERVICE_CATEGORIES
             )
             if duplicates:
-                raise ValidationError(
-                    f'Sale order {line.order_id.name} already has a labor service. '
-                    f'Only one labor service is allowed per sale order.'
-                )
+                raise ValidationError('Only one labor service product is allowed per sale order.')

@@ -1,24 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
     <record id="view_sale_order_form_worktag" model="ir.ui.view">
         <field name="name">sale.order.form.worktag</field>
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='partner_id']" position="after">
-                <!--
-                    Invisible helper field — makes commercial_partner_id
-                    available to the worktag domain in the view.
-                -->
                 <field name="worktag_commercial_partner_id" invisible="1"/>
-                <field name="worktag_id"
-                       domain="[('partner_id', '=', worktag_commercial_partner_id)]"/>
-                <field name="speedchart_id"
-                       domain="[('partner_id', '=', worktag_commercial_partner_id)]"
+                <field name="worktag_id" domain="[('partner_id', '=', worktag_commercial_partner_id)]"/>
+                <field name="speedchart_id" domain="[('partner_id', '=', worktag_commercial_partner_id)]"
                        context="{'show_speedchart': True}"/>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']//field[@name='product_id']" position="attributes">
+                <attribute name="domain">
+                    ['|',
+                     ('service_client_category', '=', False),
+                     '&amp;',
+                     ('service_client_category', '!=', False),
+                     ('service_client_category', '=', worktag_client_category),
+                    ]
+                </attribute>
             </xpath>
         </field>
     </record>
-
 </odoo>

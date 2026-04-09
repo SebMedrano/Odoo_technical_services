@@ -7,7 +7,6 @@
         <field name="inherit_id" ref="project.view_task_form2"/>
         <field name="arch" type="xml">
 
-            <!-- Add Parts tab inside the existing notebook -->
             <xpath expr="//notebook" position="inside">
                 <page string="Parts" name="parts">
 
@@ -18,18 +17,29 @@
                             <field name="quantity"/>
                             <field name="price_unit" string="Unit Price"/>
                             <!--
-                                sale_line_id shown as readonly so the user
-                                can see which SO line was created, but cannot
-                                change it manually.
+                                move_state shows the stock move status:
+                                draft, confirmed, assigned, done, cancel.
+                                Helps the user see at a glance whether
+                                the part has been moved in inventory.
                             -->
+                            <field name="move_state"
+                                   string="Stock Status"
+                                   readonly="1"
+                                   optional="show"
+                                   decoration-success="move_state == 'done'"
+                                   decoration-warning="move_state in ['draft', 'confirmed', 'assigned']"
+                                   decoration-danger="move_state == 'cancel'"/>
                             <field name="sale_line_id"
                                    string="SO Line"
                                    readonly="1"
                                    optional="show"/>
+                            <field name="move_id"
+                                   string="Stock Move"
+                                   readonly="1"
+                                   optional="hide"/>
                         </list>
                     </field>
 
-                    <!-- Total parts cost summary below the list -->
                     <group>
                         <field name="total_parts_cost"
                                readonly="1"

@@ -6,42 +6,16 @@ class ServiceWorktag(models.Model):
     _description = 'Service Worktag'
     _rec_name = 'code'
 
-    name = fields.Char(
-        string='Worktag Name',
-        required=True,
-        help='Descriptive name for this worktag',
-    )
-
-    code = fields.Char(
-        string='Worktag Code',
-        required=True,
-        help='Primary billing code used in the external billing system',
-    )
-
-    cost_centre = fields.Char(
-        string='Cost Centre',
-        help='Alphanumeric cost centre code associated with this worktag',
-    )
-
-    speedchart = fields.Char(
-        string='Speedchart',
-        help='Alternative billing code for this worktag',
-    )
+    name = fields.Char(string='Worktag Name', required=True)
+    code = fields.Char(string='Worktag Code', required=True)
+    cost_centre = fields.Char(string='Cost Centre')
+    speedchart = fields.Char(string='Speedchart')
 
     status = fields.Selection(
-        selection=[
-            ('active', 'Active'),
-            ('inactive', 'Inactive'),
-        ],
-        string='Status',
-        required=True,
-        default='active',
-        help='Inactive worktags cannot be used to create invoices',
+        selection=[('active', 'Active'), ('inactive', 'Inactive')],
+        string='Status', required=True, default='active',
     )
 
-    # New field: Client Category
-    # Selection field with exactly one value required.
-    # required=True means the user must pick one before saving.
     client_category = fields.Selection(
         selection=[
             ('chemistry', 'Chemistry Client'),
@@ -49,9 +23,13 @@ class ServiceWorktag(models.Model):
             ('external', 'External/Private Client'),
             ('department', 'Department Service Client'),
         ],
-        string='Client Category',
-        required=True,
-        help='Defines the type of client associated with this worktag',
+        string='Client Category', required=True,
+    )
+
+    validated = fields.Boolean(
+        string='Validated',
+        default=False,
+        help='Must be checked before an invoice can be created. Only managers can change this.',
     )
 
     partner_id = fields.Many2one(
@@ -60,20 +38,11 @@ class ServiceWorktag(models.Model):
         required=True,
         domain=[('is_company', '=', True)],
         ondelete='restrict',
-        help='The company this worktag belongs to',
     )
 
     _sql_constraints = [
-        (
-            'unique_code',
-            'UNIQUE(code)',
-            'A worktag with this code already exists.',
-        ),
-        (
-            'unique_speedchart',
-            'UNIQUE(speedchart)',
-            'A worktag with this speedchart already exists.',
-        ),
+        ('unique_code', 'UNIQUE(code)', 'A worktag with this code already exists.'),
+        ('unique_speedchart', 'UNIQUE(speedchart)', 'A worktag with this speedchart already exists.'),
     ]
 
     def _compute_display_name(self):
@@ -84,14 +53,10 @@ class ServiceWorktag(models.Model):
                 record.display_name = record.code
 
     @api.model
-    def _name_search(self, name='', domain=None, operator='ilike',
-                     limit=100, order=None):
+    def _name_search(self, name='', domain=None, operator='ilike', limit=100, order=None):
         if domain is None:
             domain = []
         if self.env.context.get('show_speedchart') and name:
             domain = [('speedchart', operator, name)] + domain
             return self._search(domain, limit=limit, order=order)
-        return super()._name_search(
-            name=name, domain=domain, operator=operator,
-            limit=limit, order=order,
-        )
+        return super()._name_search(name=name, domain=domain, operator=operator, limit=limit, order=order)

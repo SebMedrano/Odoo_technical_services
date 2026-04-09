@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
     <record id="view_partner_form_worktags" model="ir.ui.view">
         <field name="name">res.partner.form.worktags</field>
         <field name="model">res.partner</field>
@@ -15,14 +14,12 @@
                             <field name="cost_centre"/>
                             <field name="speedchart"/>
                             <field name="client_category"/>
-                            <field name="status"
-                                   decoration-danger="status == 'inactive'"
-                                   decoration-success="status == 'active'"/>
+                            <field name="status" decoration-danger="status == 'inactive'" decoration-success="status == 'active'"/>
+                            <field name="validated" widget="boolean" decoration-success="validated == True" decoration-warning="validated == False"/>
                         </list>
                     </field>
                 </page>
             </xpath>
         </field>
     </record>
-
 </odoo>

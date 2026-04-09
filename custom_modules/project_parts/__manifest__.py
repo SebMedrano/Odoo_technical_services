@@ -1,14 +1,15 @@
 {
     'name': 'Project Parts',
-    'version': '18.0.1.0.0',
-    'summary': 'Adds parts consumption tracking to project tasks with automatic SO sync',
+    'version': '18.0.2.0.0',
+    'summary': 'Parts consumption on project tasks with stock moves and SO sync',
     'author': 'Your Name',
     'category': 'Project',
     'depends': [
-        'project',          # project.task model
-        'sale_project',     # project → sale order link
-        'sale',             # sale.order.line model
-        'product',          # product.product model
+        'project',
+        'sale_project',
+        'sale',
+        'product',
+        'stock',         # Required for stock moves
     ],
     'data': [
         'security/ir.model.access.csv',

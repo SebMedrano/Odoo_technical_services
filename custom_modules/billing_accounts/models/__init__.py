@@ -1,4 +1,3 @@
-# Load order matters — service_worktag first as other models reference it
 from . import service_worktag
 from . import res_partner
 from . import product_template
