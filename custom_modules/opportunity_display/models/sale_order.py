@@ -11,9 +11,6 @@ class SaleOrder(models.Model):
         store=False,
     )
 
-    # Service category — mandatory, set at quote stage by supervisor/manager.
-    # Visible below the opportunity field on the main page.
-    # Propagated to invoice and repair order via related fields.
     service_type = fields.Selection(
         selection=[
             ('repair', 'Repair'),

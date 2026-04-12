@@ -7,53 +7,55 @@
         <field name="inherit_id" ref="repair.view_repair_order_form"/>
         <field name="arch" type="xml">
 
+            <!-- Timesheets tab -->
             <xpath expr="//notebook" position="inside">
                 <page string="Timesheets" name="timesheets">
-                    <!--
-                        Locked when repair is done or cancelled.
-                        Editable in all other states.
-                    -->
                     <field name="timesheet_line_ids"
                            readonly="state in ['done', 'cancel']">
                         <list editable="bottom">
                             <field name="date"/>
                             <field name="employee_id"/>
-                            <!--
-                                'name' is the description field on
-                                account.analytic.line — it maps to what
-                                we previously called 'description'.
-                            -->
                             <field name="name" string="Description"/>
-                            <!--
-                                unit_amount is the hours field.
-                                float_time widget displays as HH:MM.
-                            -->
                             <field name="unit_amount"
                                    string="Hours"
                                    widget="float_time"/>
-                            <!--
-                                repair_id is hidden in this view since
-                                it's always this repair order — no need
-                                to show it. It is set automatically.
-                            -->
                             <field name="repair_id" column_invisible="True"/>
-                            <!--
-                                project_id and task_id are hidden too —
-                                repair lines don't use them.
-                            -->
                             <field name="project_id" column_invisible="True"/>
                             <field name="task_id" column_invisible="True"/>
                         </list>
                     </field>
-
                     <group>
                         <field name="total_hours"
                                widget="float_time"
                                readonly="1"
                                string="Total Hours"/>
                     </group>
-
                 </page>
+            </xpath>
+
+            <!--
+                Restrict the clickable sale_order_id field to sales users only.
+                sales_team.group_sale_salesman is the base Sales group —
+                technicians without sales access won't see this field.
+            -->
+            <xpath expr="//field[@name='sale_order_id']" position="attributes">
+                <attribute name="groups">sales_team.group_sale_salesman</attribute>
+            </xpath>
+
+            <!--
+                Show a plain text version of the SO reference to technicians.
+                This appears after the native field (which is hidden for them).
+                readonly=1 and no Many2one widget means no clickable link.
+                groups="stock.group_stock_user" shows it to inventory/repair users.
+                The inverse groups logic means:
+                - Managers with sales access see the clickable field above
+                - Technicians with only stock access see this plain text field
+            -->
+            <xpath expr="//field[@name='sale_order_id']" position="after">
+                <field name="sale_order_name"
+                       string="Sale Order"
+                       readonly="1"
+                       groups="stock.group_stock_user"/>
             </xpath>
 
         </field>

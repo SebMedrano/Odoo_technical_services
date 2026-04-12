@@ -6,10 +6,25 @@
         <field name="model">repair.order</field>
         <field name="inherit_id" ref="repair.view_repair_order_form"/>
         <field name="arch" type="xml">
+
+            <!-- Opportunity and service type below partner field -->
             <xpath expr="//field[@name='partner_id']" position="after">
                 <field name="opportunity_id" readonly="1"/>
                 <field name="service_type" readonly="1"/>
             </xpath>
+
+            <!--
+                Opportunity Notes tab — only visible when an opportunity
+                is linked and has notes. Read-only.
+            -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Opportunity Notes"
+                      name="opportunity_notes"
+                      invisible="not opportunity_id or not opportunity_notes">
+                    <field name="opportunity_notes" readonly="1"/>
+                </page>
+            </xpath>
+
         </field>
     </record>
 

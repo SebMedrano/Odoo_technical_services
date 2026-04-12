@@ -1,7 +1,7 @@
 {
     'name': 'Opportunity Display',
-    'version': '18.0.2.0.0',
-    'summary': 'Shows opportunity, notes and service category on sale orders, invoices and repair orders',
+    'version': '18.0.3.0.0',
+    'summary': 'Shows opportunity, notes and service type on sale orders, invoices and repair orders',
     'author': 'Your Name',
     'category': 'Sales',
     'depends': [

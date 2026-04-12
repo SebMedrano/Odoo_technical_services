@@ -1,27 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
-    <!--
-        Add repair_id column to the native timesheet list view.
-        This makes repair order references visible when viewing
-        all timesheets across employees in the Timesheets menu.
-        Users can immediately see which lines came from repairs
-        vs which came from projects.
-    -->
     <record id="view_timesheet_list_repair" model="ir.ui.view">
         <field name="name">account.analytic.line.list.repair</field>
         <field name="model">account.analytic.line</field>
         <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_tree"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='project_id']" position="after">
-                <!--
-                    Show repair order reference next to the project column.
-                    optional="show" means it is visible by default but
-                    the user can hide it from the column options menu.
-                -->
                 <field name="repair_id" optional="show"/>
             </xpath>
         </field>
     </record>
-
 </odoo>

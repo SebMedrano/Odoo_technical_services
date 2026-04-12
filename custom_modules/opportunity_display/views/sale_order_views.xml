@@ -1,33 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
     <record id="view_sale_order_form_opportunity" model="ir.ui.view">
         <field name="name">sale.order.form.opportunity</field>
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
-
-            <!-- Opportunity and service category below Customer -->
             <xpath expr="//field[@name='partner_id']" position="after">
                 <field name="opportunity_id"
-                       context="{
-                           'default_partner_id': partner_id,
-                           'default_type': 'opportunity',
-                       }"/>
-                <!-- Service category directly below opportunity as required -->
+                       context="{'default_partner_id': partner_id, 'default_type': 'opportunity'}"/>
                 <field name="service_type"/>
             </xpath>
-
-            <!-- Opportunity Notes tab -->
             <xpath expr="//notebook" position="inside">
-                <page string="Opportunity Notes"
-                      name="opportunity_notes"
+                <page string="Opportunity Notes" name="opportunity_notes"
                       invisible="not opportunity_id or not opportunity_notes">
                     <field name="opportunity_notes" readonly="1"/>
                 </page>
             </xpath>
-
         </field>
     </record>
-
 </odoo>

@@ -19,7 +19,6 @@ class AccountMove(models.Model):
         store=False,
     )
 
-    # Service category read from the originating sale order.
     service_type = fields.Selection(
         related='invoice_line_ids.sale_line_ids.order_id.service_type',
         selection=[
