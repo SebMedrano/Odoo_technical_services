@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_worktag_billing_report_wizard" model="ir.ui.view">
+        <field name="name">worktag.billing.report.wizard.form</field>
+        <field name="model">worktag.billing.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Worktag Billing Report">
+                <group string="Reporting Period">
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                </group>
+                <group string="Download" invisible="not report_file">
+                    <field name="report_file"
+                           filename="report_filename"
+                           widget="binary"
+                           string="Download Report"/>
+                    <field name="report_filename" invisible="1"/>
+                </group>
+                <footer>
+                    <button string="Generate Report"
+                            name="action_generate_report"
+                            type="object"
+                            class="btn-primary"/>
+                    <button string="Close"
+                            class="btn-secondary"
+                            special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_worktag_billing_report" model="ir.actions.act_window">
+        <field name="name">Worktag Billing Report</field>
+        <field name="res_model">worktag.billing.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem
+        id="menu_worktag_billing_report"
+        name="Worktag Billing Report"
+        parent="account.menu_finance_reports"
+        action="action_worktag_billing_report"
+        sequence="100"/>
+</odoo>

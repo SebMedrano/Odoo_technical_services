@@ -1,7 +1,7 @@
 {
     'name': 'Billing Accounts (Worktags)',
-    'version': '18.0.5.0.0',
-    'summary': 'Adds worktags (billing account codes) to companies, sale orders and invoices',
+    'version': '18.0.6.0.0',
+    'summary': 'Adds worktags, billing report and invoice management',
     'author': 'Your Name',
     'category': 'Accounting',
     'depends': [
@@ -17,6 +17,7 @@
         'views/product_template_views.xml',
         'views/sale_order_views.xml',
         'views/account_move_views.xml',
+        'views/worktag_billing_report_views.xml',
     ],
     'installable': True,
     'application': False,

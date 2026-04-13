@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
     <record id="view_service_worktag_list" model="ir.ui.view">
         <field name="name">service.worktag.list</field>
         <field name="model">service.worktag</field>
@@ -78,5 +77,4 @@
     <menuitem id="menu_service_worktag" name="Worktags"
         parent="account.menu_finance_configuration"
         action="action_service_worktag" sequence="100"/>
-
 </odoo>
