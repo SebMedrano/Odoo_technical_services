@@ -2,20 +2,9 @@
 <odoo>
     <data noupdate="0">
 
-        <!--
-            REPAIR ORDER VISIBILITY RULE FOR TECHNICIANS
-
-            Technicians (stock.group_stock_user) can only see repair orders
-            where they are the assigned Responsible (user_id = their user).
-
-            Supervisors and managers who have additional groups beyond
-            stock.group_stock_user will have broader access through
-            other rules and this rule won't restrict them.
-        -->
         <record id="repair_order_rule_technician" model="ir.rule">
             <field name="name">repair.order.technician.own.only</field>
-            <field name="model_id" search="[('model','=','repair.order')]"
-                   model="ir.model"/>
+            <field name="model_id" search="[('model','=','repair.order')]" model="ir.model"/>
             <field name="domain_force">[('user_id', '=', user.id)]</field>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="True"/>
@@ -24,16 +13,9 @@
             <field name="groups" eval="[(4, ref('stock.group_stock_user'))]"/>
         </record>
 
-        <!--
-            REPAIR ORDER VISIBILITY RULE FOR MANAGERS/APPROVERS
-
-            Users with stock.group_stock_manager can see ALL repair orders.
-            This rule overrides the technician rule for managers.
-        -->
         <record id="repair_order_rule_manager" model="ir.rule">
             <field name="name">repair.order.manager.all</field>
-            <field name="model_id" search="[('model','=','repair.order')]"
-                   model="ir.model"/>
+            <field name="model_id" search="[('model','=','repair.order')]" model="ir.model"/>
             <field name="domain_force">[(1, '=', 1)]</field>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="True"/>
@@ -42,13 +24,6 @@
             <field name="groups" eval="[(4, ref('stock.group_stock_manager'))]"/>
         </record>
 
-        <!--
-            TIMESHEET LINE RULE FOR TECHNICIANS
-
-            Allows technicians to create/edit analytic lines linked
-            to repair orders where they are the responsible user.
-            Bypasses the native project_id != False requirement.
-        -->
         <record id="repair_timesheet_line_rule_user" model="ir.rule">
             <field name="name">account.analytic.line.repair.user</field>
             <field name="model_id" ref="analytic.model_account_analytic_line"/>
@@ -63,11 +38,6 @@
             <field name="groups" eval="[(4, ref('hr_timesheet.group_hr_timesheet_user'))]"/>
         </record>
 
-        <!--
-            TIMESHEET LINE RULE FOR APPROVERS/MANAGERS
-
-            Approvers and managers can access all repair timesheet lines.
-        -->
         <record id="repair_timesheet_line_rule_approver" model="ir.rule">
             <field name="name">account.analytic.line.repair.approver</field>
             <field name="model_id" ref="analytic.model_account_analytic_line"/>

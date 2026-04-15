@@ -17,12 +17,22 @@ class RepairOrder(models.Model):
         store=False,
     )
 
+    sale_order_name = fields.Char(
+        string='Sale Order',
+        compute='_compute_sale_order_name',
+        store=False,
+    )
+
     @api.depends('timesheet_line_ids.unit_amount')
     def _compute_total_hours(self):
         for repair in self:
             repair.total_hours = sum(
                 repair.timesheet_line_ids.mapped('unit_amount')
             )
+
+    def _compute_sale_order_name(self):
+        for repair in self:
+            repair.sale_order_name = repair.sale_order_id.name if repair.sale_order_id else ''
 
     def write(self, vals):
         result = super().write(vals)
@@ -43,16 +53,3 @@ class RepairOrder(models.Model):
             )[:1]
             if labor_line:
                 labor_line.sudo().write({'product_uom_qty': total})
-
-
-    # Computed field that returns the sale order name as plain text.
-    # Used to show technicians the SO reference without a clickable link.
-    sale_order_name = fields.Char(
-        string='Sale Order',
-        compute='_compute_sale_order_name',
-        store=False,
-    )
-
-    def _compute_sale_order_name(self):
-        for repair in self:
-            repair.sale_order_name = repair.sale_order_id.name if repair.sale_order_id else ''

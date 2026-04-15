@@ -1,13 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
     <record id="view_timesheet_list_repair" model="ir.ui.view">
         <field name="name">account.analytic.line.list.repair</field>
         <field name="model">account.analytic.line</field>
         <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_tree"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='project_id']" position="after">
-                <field name="repair_id" optional="show"/>
+
+            <!--
+                Remove required="1" from project_id and make it invisible
+                when a repair_id is set. This fixes the "Invalid fields: project"
+                warning that appears because repair lines have no project.
+            -->
+            <xpath expr="//field[@name='project_id']" position="attributes">
+                <attribute name="required">0</attribute>
+                <attribute name="invisible">repair_id != False</attribute>
+                <attribute name="optional">show</attribute>
             </xpath>
+
+            <!--
+                Also hide task_id when repair_id is set since tasks
+                belong to projects and repair lines have neither.
+            -->
+            <xpath expr="//field[@name='task_id']" position="attributes">
+                <attribute name="invisible">repair_id != False</attribute>
+            </xpath>
+
+            <!--
+                Add repair_id column — visible when line belongs to a repair.
+                Placed after project_id so it takes the same visual position.
+            -->
+            <xpath expr="//field[@name='project_id']" position="after">
+                <field name="repair_id"
+                       optional="show"
+                       readonly="1"
+                       invisible="repair_id == False"/>
+                <!--
+                    opportunity_id from the repair order — shows the
+                    opportunity title so users can identify the work context.
+                    Related field via repair_id.sale_order_id.opportunity_id
+                -->
+                <field name="repair_opportunity_id"
+                       string="Opportunity"
+                       optional="show"
+                       readonly="1"
+                       invisible="repair_id == False"/>
+            </xpath>
+
         </field>
     </record>
+
 </odoo>

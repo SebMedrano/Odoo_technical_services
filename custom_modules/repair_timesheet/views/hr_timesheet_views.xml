@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <!--
+            Update "My Timesheets" action domain to include repair lines.
+            Using function tag to update existing record without
+            triggering a create (which would fail on missing name field).
+        -->
+        <function model="ir.actions.act_window" name="write">
+            <value eval="[ref('hr_timesheet.act_hr_timesheet_line')]"/>
+            <value eval="{
+                'domain': &quot;['|', ('project_id', '!=', False), ('repair_id', '!=', False), ('user_id', '=', uid)]&quot;
+            }"/>
+        </function>
+
+        <!--
+            Update "All Timesheets" action domain to include repair lines.
+        -->
+        <function model="ir.actions.act_window" name="write">
+            <value eval="[ref('hr_timesheet.timesheet_action_all')]"/>
+            <value eval="{
+                'domain': &quot;['|', ('project_id', '!=', False), ('repair_id', '!=', False)]&quot;
+            }"/>
+        </function>
+
+    </data>
+</odoo>
