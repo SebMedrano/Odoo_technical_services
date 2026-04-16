@@ -2,17 +2,48 @@
 <odoo>
     <data noupdate="0">
 
-        <record id="repair_order_rule_technician" model="ir.rule">
-            <field name="name">repair.order.technician.own.only</field>
+        <!--
+            REPAIR ORDER READ RULE FOR TECHNICIANS
+
+            Technicians can READ any repair order that has an instrument
+            linked to it. This allows them to consult repair history
+            for any instrument in the registry.
+
+            Separate from the write rule below — read-only access.
+        -->
+        <record id="repair_order_rule_technician_read" model="ir.rule">
+            <field name="name">repair.order.technician.instrument.read</field>
             <field name="model_id" search="[('model','=','repair.order')]" model="ir.model"/>
-            <field name="domain_force">[('user_id', '=', user.id)]</field>
+            <field name="domain_force">[('instrument_id', '!=', False)]</field>
             <field name="perm_read" eval="True"/>
-            <field name="perm_write" eval="True"/>
-            <field name="perm_create" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
             <field name="perm_unlink" eval="False"/>
             <field name="groups" eval="[(4, ref('stock.group_stock_user'))]"/>
         </record>
 
+        <!--
+            REPAIR ORDER WRITE RULE FOR TECHNICIANS
+
+            Technicians can only create/write/delete repair orders
+            where they are the assigned Responsible (user_id).
+        -->
+        <record id="repair_order_rule_technician" model="ir.rule">
+            <field name="name">repair.order.technician.own.only</field>
+            <field name="model_id" search="[('model','=','repair.order')]" model="ir.model"/>
+            <field name="domain_force">[('user_id', '=', user.id)]</field>
+            <field name="perm_read" eval="False"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+            <field name="groups" eval="[(4, ref('stock.group_stock_user'))]"/>
+        </record>
+
+        <!--
+            REPAIR ORDER VISIBILITY RULE FOR MANAGERS/APPROVERS
+
+            Managers can see and edit ALL repair orders.
+        -->
         <record id="repair_order_rule_manager" model="ir.rule">
             <field name="name">repair.order.manager.all</field>
             <field name="model_id" search="[('model','=','repair.order')]" model="ir.model"/>
@@ -24,6 +55,12 @@
             <field name="groups" eval="[(4, ref('stock.group_stock_manager'))]"/>
         </record>
 
+        <!--
+            TIMESHEET LINE RULE FOR TECHNICIANS
+
+            Allows technicians to create/edit analytic lines linked
+            to repair orders where they are the responsible user.
+        -->
         <record id="repair_timesheet_line_rule_user" model="ir.rule">
             <field name="name">account.analytic.line.repair.user</field>
             <field name="model_id" ref="analytic.model_account_analytic_line"/>
@@ -38,6 +75,11 @@
             <field name="groups" eval="[(4, ref('hr_timesheet.group_hr_timesheet_user'))]"/>
         </record>
 
+        <!--
+            TIMESHEET LINE RULE FOR APPROVERS/MANAGERS
+
+            Approvers and managers can access all repair timesheet lines.
+        -->
         <record id="repair_timesheet_line_rule_approver" model="ir.rule">
             <field name="name">account.analytic.line.repair.approver</field>
             <field name="model_id" ref="analytic.model_account_analytic_line"/>

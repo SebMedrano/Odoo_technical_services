@@ -9,6 +9,7 @@
         'hr_timesheet',
         'sale',
         'crm',
+        'instrument_registry',
     ],
     'data': [
         'security/ir.model.access.csv',
