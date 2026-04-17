@@ -1,136 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!-- LIST VIEW -->
-    <record id="view_service_instrument_list" model="ir.ui.view">
-        <field name="name">service.instrument.list</field>
-        <field name="model">service.instrument</field>
-        <field name="arch" type="xml">
-            <list string="Instruments">
-                <field name="reference"/>
-                <field name="display_name"/>
-                <field name="instrument_type_id"/>
-                <field name="partner_id"/>
-                <field name="building_id"/>
-                <field name="room"/>
-            </list>
-        </field>
-    </record>
-
-    <!-- FORM VIEW -->
     <record id="view_service_instrument_form" model="ir.ui.view">
         <field name="name">service.instrument.form</field>
         <field name="model">service.instrument</field>
         <field name="arch" type="xml">
             <form string="Instrument">
-
-                <div class="oe_button_box" name="button_box">
-                    <button class="oe_stat_button"
-                            type="object"
-                            name="action_view_repairs"
-                            icon="fa-wrench">
-                        <field string="Repairs"
-                               name="repair_count"
-                               widget="statinfo"/>
-                    </button>
-                    <button class="oe_stat_button"
-                            type="object"
-                            name="action_view_sales"
-                            icon="fa-shopping-cart">
-                        <field string="Sale Orders"
-                               name="sale_count"
-                               widget="statinfo"/>
-                    </button>
-                </div>
-
+                <header>
+                    <field name="validated" widget="boolean_button"
+                           options="{'terminology': {
+                               'string_true': 'Validated',
+                               'string_false': 'Not Validated',
+                               'hover_true': 'Mark as not validated',
+                               'hover_false': 'Mark as validated'
+                           }}"/>
+                </header>
                 <sheet>
-                    <div class="oe_title">
-                        <field name="photo"
-                               widget="image"
-                               class="oe_avatar"
-                               options="{'preview_image': 'photo'}"/>
-                        <div>
-                            <label for="reference" string="Instrument ID"/>
-                            <h1>
-                                <field name="reference" readonly="1"/>
-                            </h1>
-                            <h2>
-                                <field name="display_name" readonly="1"/>
-                            </h2>
-                        </div>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_repairs"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-wrench">
+                            <field name="repair_count"
+                                   widget="statinfo"
+                                   string="Repairs"/>
+                        </button>
                     </div>
-
+                    <field name="photo" widget="image" class="oe_avatar"/>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
                     <group>
-                        <group string="Identification">
+                        <group string="Instrument Details">
                             <field name="make"/>
                             <field name="model"/>
                             <field name="serial_number"/>
                             <field name="description"/>
                             <field name="instrument_type_id"/>
                         </group>
-                        <group string="Ownership &amp; Location">
+                        <group string="Location">
                             <field name="partner_id"/>
                             <field name="building_id"/>
                             <field name="room"/>
                         </group>
                     </group>
-
                     <notebook>
-                        <page string="Internal Notes" name="notes">
-                            <field name="notes"
-                                   placeholder="Add internal notes about this instrument..."/>
+                        <page string="Notes" name="notes">
+                            <field name="notes"/>
                         </page>
                     </notebook>
-
                 </sheet>
-
-                <chatter/>
-
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
             </form>
         </field>
     </record>
 
-    <!-- SEARCH VIEW -->
+    <record id="view_service_instrument_list" model="ir.ui.view">
+        <field name="name">service.instrument.list</field>
+        <field name="model">service.instrument</field>
+        <field name="arch" type="xml">
+            <list string="Instruments">
+                <field name="name"/>
+                <field name="make"/>
+                <field name="model"/>
+                <field name="serial_number"/>
+                <field name="instrument_type_id"/>
+                <field name="partner_id"/>
+                <field name="building_id"/>
+                <field name="validated" widget="boolean"
+                       decoration-success="validated == True"
+                       decoration-warning="validated == False"/>
+                <field name="repair_count" string="Repairs"/>
+            </list>
+        </field>
+    </record>
+
     <record id="view_service_instrument_search" model="ir.ui.view">
         <field name="name">service.instrument.search</field>
         <field name="model">service.instrument</field>
         <field name="arch" type="xml">
             <search string="Search Instruments">
-                <field name="reference"/>
-                <field name="display_name"/>
+                <field name="name"/>
                 <field name="make"/>
                 <field name="model"/>
                 <field name="serial_number"/>
-                <field name="description"/>
                 <field name="partner_id"/>
                 <field name="instrument_type_id"/>
                 <field name="building_id"/>
-                <group expand="0" string="Group By">
-                    <filter string="Customer" name="partner"
-                            context="{'group_by': 'partner_id'}"/>
-                    <filter string="Type" name="type"
-                            context="{'group_by': 'instrument_type_id'}"/>
-                    <filter string="Building" name="building"
-                            context="{'group_by': 'building_id'}"/>
-                </group>
+                <filter string="Validated" name="validated" domain="[('validated', '=', True)]"/>
+                <filter string="Not Validated" name="not_validated" domain="[('validated', '=', False)]"/>
             </search>
         </field>
     </record>
 
-    <!-- ACTION -->
     <record id="action_service_instrument" model="ir.actions.act_window">
         <field name="name">Instruments</field>
         <field name="res_model">service.instrument</field>
         <field name="view_mode">list,form</field>
         <field name="search_view_id" ref="view_service_instrument_search"/>
     </record>
-
-    <!-- MENU -->
-    <menuitem
-        id="menu_service_instrument"
-        name="Instruments"
-        parent="repair.menu_repair_order"
-        action="action_service_instrument"
-        sequence="5"/>
 
 </odoo>

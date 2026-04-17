@@ -8,7 +8,6 @@
         <field name="inherit_id" ref="repair.view_repair_order_form"/>
         <field name="arch" type="xml">
 
-            <!-- Timesheets tab -->
             <xpath expr="//notebook" position="inside">
                 <page string="Timesheets" name="timesheets">
                     <field name="timesheet_line_ids"
@@ -29,43 +28,57 @@
                 </page>
             </xpath>
 
-            <!-- Hide under_warranty field for technicians -->
             <xpath expr="//field[@name='under_warranty']" position="attributes">
-                <attribute name="groups">stock.group_stock_manager</attribute>
+                <attribute name="groups">techservices_groups.group_supervisor</attribute>
             </xpath>
 
-            <!-- Hide Miscellaneous tab for technicians -->
             <xpath expr="//page[@name='page_miscellaneous']" position="attributes">
-                <attribute name="groups">stock.group_stock_manager</attribute>
+                <attribute name="groups">techservices_groups.group_supervisor</attribute>
             </xpath>
 
-            <!-- Restrict clickable SO field to sales users -->
             <xpath expr="//field[@name='sale_order_id']" position="attributes">
-                <attribute name="groups">sales_team.group_sale_salesman</attribute>
+                <attribute name="groups">techservices_groups.group_supervisor</attribute>
             </xpath>
 
-            <!-- Show plain text SO reference to technicians -->
             <xpath expr="//field[@name='sale_order_id']" position="after">
                 <field name="sale_order_name"
                        string="Sale Order"
                        readonly="1"
-                       groups="stock.group_stock_user"/>
+                       groups="techservices_groups.group_technician"/>
             </xpath>
 
         </field>
     </record>
 
-    <!-- List view: hide is_returned by restricting to managers only -->
+    <!-- List view: hide is_returned from technicians -->
     <record id="view_repair_order_list_hide_returned" model="ir.ui.view">
         <field name="name">repair.order.list.hide.returned</field>
         <field name="model">repair.order</field>
         <field name="inherit_id" ref="repair.view_repair_order_tree"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='is_returned']" position="attributes">
-                <attribute name="groups">stock.group_stock_manager</attribute>
-                <attribute name="optional">hide</attribute>
+                <attribute name="groups">techservices_groups.group_supervisor</attribute>
             </xpath>
         </field>
     </record>
+
+    <!-- Add My Repairs filter to repair order search view -->
+    <record id="view_repair_order_search_my_repairs" model="ir.ui.view">
+        <field name="name">repair.order.search.my.repairs</field>
+        <field name="model">repair.order</field>
+        <field name="inherit_id" ref="repair.view_repair_order_form_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <filter string="My Repairs" name="my_repairs"
+                        domain="[('user_id', '=', uid)]"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Set My Repairs as default filter on the repair order list action -->
+    <function model="ir.actions.act_window" name="write">
+        <value eval="[ref('repair.action_repair_order_tree')]"/>
+        <value eval="{'context': {'search_default_my_repairs': 1}}"/>
+    </function>
 
 </odoo>

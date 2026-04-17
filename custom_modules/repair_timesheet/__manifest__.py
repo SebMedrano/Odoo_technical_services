@@ -1,6 +1,6 @@
 {
     'name': 'Repair Timesheet',
-    'version': '18.0.5.0.0',
+    'version': '18.0.6.0.0',
     'summary': 'Adds timesheet tracking to repair orders using native analytic lines',
     'author': 'Your Name',
     'category': 'Repair',
@@ -10,6 +10,7 @@
         'sale',
         'crm',
         'instrument_registry',
+        'techservices_groups',
     ],
     'data': [
         'security/ir.model.access.csv',

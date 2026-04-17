@@ -1,6 +1,6 @@
 {
     'name': 'Instrument Registry',
-    'version': '18.0.3.0.0',
+    'version': '18.0.4.0.0',
     'summary': 'Registry of instruments and equipment for repair tracking',
     'author': 'Your Name',
     'category': 'Repair',
@@ -8,7 +8,8 @@
         'repair',
         'sale',
         'mail',
-        'opportunity_display',  # needed for opportunity_id on repair.order
+        'opportunity_display',
+        'techservices_groups',
     ],
     'data': [
         'security/ir.model.access.csv',

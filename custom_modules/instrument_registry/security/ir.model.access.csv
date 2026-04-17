@@ -1,7 +1,7 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_service_instrument_user,service.instrument user,model_service_instrument,base.group_user,1,1,1,0
-access_service_instrument_manager,service.instrument manager,model_service_instrument,base.group_system,1,1,1,1
+access_service_instrument_user,service.instrument user,model_service_instrument,base.group_user,1,0,0,0
+access_service_instrument_manager,service.instrument manager,model_service_instrument,techservices_groups.group_supervisor,1,1,1,1
 access_service_instrument_type_user,service.instrument.type user,model_service_instrument_type,base.group_user,1,0,0,0
-access_service_instrument_type_manager,service.instrument.type manager,model_service_instrument_type,base.group_system,1,1,1,1
+access_service_instrument_type_manager,service.instrument.type manager,model_service_instrument_type,techservices_groups.group_supervisor,1,1,1,1
 access_service_building_user,service.building user,model_service_building,base.group_user,1,0,0,0
-access_service_building_manager,service.building manager,model_service_building,base.group_system,1,1,1,1
+access_service_building_manager,service.building manager,model_service_building,techservices_groups.group_supervisor,1,1,1,1

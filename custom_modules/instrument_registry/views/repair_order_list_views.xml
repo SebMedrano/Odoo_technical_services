@@ -1,47 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
-    <!-- Add opportunity and instrument columns to the repair order list view -->
     <record id="view_repair_order_list_instrument_opportunity" model="ir.ui.view">
         <field name="name">repair.order.list.instrument.opportunity</field>
         <field name="model">repair.order</field>
         <field name="inherit_id" ref="repair.view_repair_order_tree"/>
         <field name="arch" type="xml">
-
-            <!--
-                Add instrument_id after the repair order name column.
-                optional="show" means it is visible by default but
-                the user can hide it from the column options menu.
-            -->
             <xpath expr="//field[@name='name']" position="after">
-                <field name="instrument_id"
-                       optional="show"
-                       readonly="1"/>
-                <field name="opportunity_id"
-                       optional="show"
-                       readonly="1"/>
+                <field name="instrument_id" optional="show" readonly="1"/>
+                <field name="opportunity_id" optional="show" readonly="1"/>
             </xpath>
-
         </field>
     </record>
-
-    <!-- Add opportunity and instrument to the repair order kanban card -->
     <record id="view_repair_kanban_instrument_opportunity" model="ir.ui.view">
         <field name="name">repair.kanban.instrument.opportunity</field>
         <field name="model">repair.order</field>
         <field name="inherit_id" ref="repair.view_repair_kanban"/>
         <field name="arch" type="xml">
-
-            <!--
-                Add instrument and opportunity below the product_id
-                in the kanban card left column.
-            -->
             <xpath expr="//field[@name='product_id']" position="after">
                 <field name="instrument_id"/>
                 <field name="opportunity_id"/>
             </xpath>
-
         </field>
     </record>
-
 </odoo>

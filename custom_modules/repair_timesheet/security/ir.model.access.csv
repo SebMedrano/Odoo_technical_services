@@ -1,4 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_repair_timesheet_analytic_user,repair timesheet analytic user,account.model_account_analytic_line,base.group_user,1,1,1,1
-access_stock_move_repair_user,stock.move repair user,stock.model_stock_move,stock.group_stock_user,1,1,1,0
-access_sale_order_line_repair_user,sale.order.line repair user,sale.model_sale_order_line,stock.group_stock_user,1,1,1,0
+access_repair_timesheet_analytic_technician,repair timesheet analytic technician,account.model_account_analytic_line,techservices_groups.group_technician,1,1,1,1
+access_stock_move_repair_technician,stock.move repair technician,stock.model_stock_move,techservices_groups.group_technician,1,1,1,0
+access_sale_order_line_repair_technician,sale.order.line repair technician,sale.model_sale_order_line,techservices_groups.group_technician,1,1,1,0
