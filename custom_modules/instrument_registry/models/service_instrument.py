@@ -52,8 +52,6 @@ class ServiceInstrument(models.Model):
             )
 
     def action_view_repairs(self):
-        # Use type=object (Python method) so active_id is always
-        # available as self.id — no client-side domain evaluation needed.
         self.ensure_one()
         return {
             'type': 'ir.actions.act_window',
