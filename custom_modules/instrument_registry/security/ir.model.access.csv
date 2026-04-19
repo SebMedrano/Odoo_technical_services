@@ -5,3 +5,5 @@ access_service_instrument_type_user,service.instrument.type user,model_service_i
 access_service_instrument_type_manager,service.instrument.type manager,model_service_instrument_type,techservices_groups.group_supervisor,1,1,1,1
 access_service_building_user,service.building user,model_service_building,base.group_user,1,0,0,0
 access_service_building_manager,service.building manager,model_service_building,techservices_groups.group_supervisor,1,1,1,1
+access_instrument_document_user,instrument.document user,model_instrument_document,base.group_user,1,0,0,0
+access_instrument_document_manager,instrument.document manager,model_instrument_document,techservices_groups.group_supervisor,1,1,1,1

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_instrument_document_list" model="ir.ui.view">
+        <field name="name">instrument.document.list</field>
+        <field name="model">instrument.document</field>
+        <field name="arch" type="xml">
+            <list string="Documents">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="description"/>
+                <field name="type"/>
+                <field name="file_size" optional="show" string="Size"/>
+                <field name="create_date" string="Uploaded On" widget="date"/>
+                <field name="create_uid" string="Uploaded By"/>
+                <field name="instrument_id" column_invisible="True"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_instrument_document_form" model="ir.ui.view">
+        <field name="name">instrument.document.form</field>
+        <field name="model">instrument.document</field>
+        <field name="arch" type="xml">
+            <form string="Document">
+                <sheet>
+                    <group>
+                        <field name="name" string="Document Name"/>
+                        <field name="description"/>
+                        <field name="instrument_id"/>
+                        <field name="datas" string="File" widget="binary" filename="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>

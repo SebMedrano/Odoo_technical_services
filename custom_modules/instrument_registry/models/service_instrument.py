@@ -36,6 +36,17 @@ class ServiceInstrument(models.Model):
         compute='_compute_repair_count',
     )
 
+    document_ids = fields.One2many(
+        comodel_name='instrument.document',
+        inverse_name='instrument_id',
+        string='Documents',
+    )
+
+    document_count = fields.Integer(
+        string='Documents',
+        compute='_compute_document_count',
+    )
+
     def _compute_display_name(self):
         for rec in self:
             parts = [rec.make, rec.model]
@@ -51,6 +62,12 @@ class ServiceInstrument(models.Model):
                 [('instrument_id', '=', instrument.id)]
             )
 
+    def _compute_document_count(self):
+        for instrument in self:
+            instrument.document_count = self.env['instrument.document'].search_count(
+                [('instrument_id', '=', instrument.id)]
+            )
+
     def action_view_repairs(self):
         self.ensure_one()
         return {
@@ -60,6 +77,24 @@ class ServiceInstrument(models.Model):
             'view_mode': 'list,form',
             'domain': [('instrument_id', '=', self.id)],
             'context': {'default_instrument_id': self.id},
+        }
+
+    def action_open_documents(self):
+        self.ensure_one()
+        list_view = self.env.ref('instrument_registry.view_instrument_document_list')
+        form_view = self.env.ref('instrument_registry.view_instrument_document_form')
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Documents',
+            'res_model': 'instrument.document',
+            'view_mode': 'list,form',
+            'views': [(list_view.id, 'list'), (form_view.id, 'form')],
+            'domain': [('instrument_id', '=', self.id)],
+            'context': {
+                'default_instrument_id': self.id,
+                'default_res_model': 'service.instrument',
+                'default_res_id': self.id,
+            },
         }
 
     @api.model_create_multi

@@ -25,6 +25,14 @@
                                    widget="statinfo"
                                    string="Repairs"/>
                         </button>
+                        <button name="action_open_documents"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-files-o">
+                            <field name="document_count"
+                                   widget="statinfo"
+                                   string="Documents"/>
+                        </button>
                     </div>
                     <field name="photo" widget="image" class="oe_avatar"/>
                     <div class="oe_title">
@@ -71,6 +79,7 @@
                        decoration-success="validated == True"
                        decoration-warning="validated == False"/>
                 <field name="repair_count" string="Repairs"/>
+                <field name="document_count" string="Documents"/>
             </list>
         </field>
     </record>
