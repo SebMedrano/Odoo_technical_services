@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Hide Expected Revenue and Probability in the full opportunity form from Supervisor/Technician -->
+
+    <record id="crm_lead_view_form_techservices" model="ir.ui.view">
+        <field name="name">crm.lead.view.form.techservices.groups</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <!-- Outer div wrapping Expected Revenue (unique by w-sm-auto class in this form) -->
+            <xpath expr="//div[contains(@class,'w-sm-auto')]" position="attributes">
+                <attribute name="groups">techservices_groups.group_manager</attribute>
+            </xpath>
+            <!-- Outer div wrapping Probability (identified by its child div#probability) -->
+            <xpath expr="//div[div[@id='probability']]" position="attributes">
+                <attribute name="groups">techservices_groups.group_manager</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Hide Enrich buttons from Supervisor/Technician -->
+
+    <record id="crm_lead_view_form_enrich_techservices" model="ir.ui.view">
+        <field name="name">crm.lead.view.form.enrich.techservices.groups</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm_iap_enrich.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='iap_enrich'][1]" position="attributes">
+                <attribute name="groups">techservices_groups.group_manager</attribute>
+            </xpath>
+            <xpath expr="//button[@name='iap_enrich'][2]" position="attributes">
+                <attribute name="groups">techservices_groups.group_manager</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Hide "Expected Revenue" in the quick-create opportunity form from Supervisor/Technician -->
+
+    <record id="quick_create_opportunity_form_techservices" model="ir.ui.view">
+        <field name="name">crm.lead.form.quick_create.techservices</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.quick_create_opportunity_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//label[@for='expected_revenue']" position="attributes">
+                <attribute name="groups">techservices_groups.group_manager</attribute>
+            </xpath>
+            <xpath expr="//field[@name='expected_revenue']" position="attributes">
+                <attribute name="groups">techservices_groups.group_manager</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Restrict "Generate Leads" button to Manager role only (was: Sales Manager) -->
+
+    <record id="crm_lead_view_tree_opportunity_groups" model="ir.ui.view">
+        <field name="name">crm.lead.view.list.opportunity.inherit.techservices</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm_iap_mine.crm_lead_view_tree_opportunity"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_generate_leads']" position="attributes">
+                <attribute name="groups">techservices_groups.group_manager</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="crm_lead_view_tree_lead_groups" model="ir.ui.view">
+        <field name="name">crm.lead.view.list.lead.inherit.techservices</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm_iap_mine.crm_lead_view_tree_lead"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_generate_leads']" position="attributes">
+                <attribute name="groups">techservices_groups.group_manager</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_crm_lead_kanban_groups" model="ir.ui.view">
+        <field name="name">crm.lead.kanban.inherit.techservices</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm_iap_mine.view_crm_lead_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_generate_leads']" position="attributes">
+                <attribute name="groups">techservices_groups.group_manager</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="crm_case_kanban_view_leads_groups" model="ir.ui.view">
+        <field name="name">crm.lead.kanban.lead.inherit.techservices</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm_iap_mine.crm_case_kanban_view_leads"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_generate_leads']" position="attributes">
+                <attribute name="groups">techservices_groups.group_manager</attribute>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
