@@ -16,6 +16,10 @@
             <xpath expr="//div[div[@id='probability']]" position="attributes">
                 <attribute name="groups">techservices_groups.group_manager</attribute>
             </xpath>
+            <!-- Disable quick-create on Contact field; only "Create and edit" allowed -->
+            <xpath expr="//group[@name='opportunity_partner']//field[@name='partner_id']" position="attributes">
+                <attribute name="options">{'no_quick_create': True}</attribute>
+            </xpath>
         </field>
     </record>
 
@@ -30,6 +34,22 @@
                 <attribute name="groups">techservices_groups.group_manager</attribute>
             </xpath>
             <xpath expr="//button[@name='iap_enrich'][2]" position="attributes">
+                <attribute name="groups">techservices_groups.group_manager</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Hide Marketing and Tracking groups in Extra Information tab from Supervisor/Technician -->
+
+    <record id="crm_lead_view_form_extra_info_techservices" model="ir.ui.view">
+        <field name="name">crm.lead.view.form.extra.info.techservices.groups</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='lead']/group/group[3]" position="attributes">
+                <attribute name="groups">techservices_groups.group_manager</attribute>
+            </xpath>
+            <xpath expr="//group[@name='Misc']" position="attributes">
                 <attribute name="groups">techservices_groups.group_manager</attribute>
             </xpath>
         </field>
