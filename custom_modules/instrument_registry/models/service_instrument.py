@@ -2,6 +2,11 @@ from odoo import models, fields, api
 
 
 class ServiceInstrument(models.Model):
+    # Access rights: all internal users can read, write, and create instruments
+    # (perm_write=1, perm_create=1 in ir.model.access.csv for base.group_user).
+    # Write is required alongside create so that the form view can persist
+    # relational field values when saving a new record.
+    # Delete (perm_unlink) remains restricted to techservices_groups.group_supervisor.
     _name = 'service.instrument'
     _description = 'Service Instrument'
     _inherit = ['mail.thread', 'mail.activity.mixin']

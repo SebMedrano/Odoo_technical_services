@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!--
+            DEPARTMENT / UNIT FIELD
+            ══════════════════════════════════════════════════════════════════
+
+            Adds x_department_unit to the main contact form.  The field is:
+              - visible only when Company type is selected
+              - required when Company type is selected (mandatory for reporting)
+
+            Placed after the "Job Position" field (function), which is itself
+            hidden for companies, so the two fields never appear together and
+            the form stays uncluttered.
+        -->
+        <record id="res_partner_form_add_department_unit" model="ir.ui.view">
+            <field name="name">res.partner.form.department.unit.techservices</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='function']" position="after">
+                    <!--
+                        Visible for:
+                          - Company contacts (required)
+                          - Individual contacts linked to a parent company
+                            (optional — inherited from parent via onchange)
+                        Hidden for standalone individuals and Suppliers.
+                    -->
+                    <field name="x_department_unit"
+                           placeholder="e.g. Chemistry, Genomics"
+                           invisible="company_type != 'company' and not parent_id"
+                           required="company_type == 'company'"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

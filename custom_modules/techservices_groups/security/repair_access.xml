@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <!--
+            REPAIR ORDER ACCESS CONTROL
+            ════════════════════════════════════════════════════════════════════
+
+            Goal: Technicians should not be able to create new repair orders
+            directly from the Repairs list view (the "New" button must be
+            hidden for them).
+
+            How Odoo permission logic works here:
+            ─ ir.model.access rules are ADDITIVE (OR logic): a user gets a
+              permission if ANY group they belong to grants it.
+            ─ There is no "deny" rule, so we cannot block create for one group
+              while another grants it.
+
+            Strategy:
+            1. Remove perm_create from the existing stock.group_stock_user rule
+               (repair.access_repair_user).  Technicians only belong to
+               stock.group_stock_user, so they lose the ability to create
+               repair orders, and Odoo automatically hides the "New" button.
+            2. Add a new rule that grants perm_create to
+               techservices_groups.group_supervisor.  Since Supervisors and
+               Managers both inherit group_supervisor via implied_ids, they
+               retain full create access through this rule.
+        -->
+
+        <!-- 1. Strip create permission from the base Inventory/User rule.
+                Technicians only belong to stock.group_stock_user, so after
+                this change they will no longer be able to create repair orders. -->
+        <record id="repair.access_repair_user" model="ir.model.access">
+            <field name="perm_create" eval="False"/>
+        </record>
+
+        <!-- 2. Grant full access (including create) to the Supervisor role.
+                techservices_groups.group_supervisor is implied by group_manager,
+                so Managers also benefit from this rule automatically. -->
+        <record id="access_repair_order_supervisor" model="ir.model.access">
+            <field name="name">repair.order.techservices.supervisor</field>
+            <field name="model_id" ref="repair.model_repair_order"/>
+            <field name="group_id" ref="techservices_groups.group_supervisor"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!--
+            INVOICE CONFIRM / POST BUTTON RESTRICTION
+            ══════════════════════════════════════════════════════════════════
+
+            Goal: Supervisors can create draft invoices but cannot post them.
+            Only the Manager role should be able to move an invoice from
+            Draft → Posted by clicking Confirm (customer invoices) or Post
+            (journal entries).
+
+            Both the "Confirm" and "Post" buttons call action_post() and share
+            name="action_post", so a single XPath catches both.  We replace the
+            existing groups="account.group_account_invoice" with
+            groups="techservices_groups.group_manager", which is implied by
+            the Manager role only.
+
+            A matching server-side guard in models/account_move.py ensures the
+            restriction also applies if action_post() is triggered outside the
+            UI (e.g. RPC call or automated action).
+        -->
+        <record id="account_move_hide_post_supervisor" model="ir.ui.view">
+            <field name="name">account.move.hide.post.supervisor.techservices</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <!-- Restrict both the "Confirm" (invoice) and "Post" (journal entry)
+                     buttons to the Manager role.  Supervisors will see neither button
+                     and therefore cannot transition an invoice out of Draft state. -->
+                <xpath expr="//button[@name='action_post']" position="attributes">
+                    <attribute name="groups">techservices_groups.group_manager</attribute>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

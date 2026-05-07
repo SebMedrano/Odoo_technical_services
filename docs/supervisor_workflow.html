@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Supervisor Workflow — MES Head Guide</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f4f6f9;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    /* ── Header ── */
+    header {
+      background: linear-gradient(135deg, #6b5b95 0%, #4a3f72 100%);
+      color: #fff;
+      padding: 40px 48px 36px;
+    }
+    header .badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    header h1 { font-size: 32px; font-weight: 700; margin-bottom: 8px; }
+    header p  { font-size: 15px; opacity: 0.85; max-width: 680px; }
+    header .meta {
+      margin-top: 20px;
+      display: flex;
+      gap: 28px;
+      font-size: 13px;
+      opacity: 0.75;
+    }
+    header .meta span::before { margin-right: 6px; }
+
+    /* ── Layout ── */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    /* ── Intro box ── */
+    .intro {
+      background: #fff;
+      border-radius: 10px;
+      border-left: 4px solid #6b5b95;
+      padding: 24px 28px;
+      margin-bottom: 48px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    }
+    .intro h2 { font-size: 16px; color: #6b5b95; margin-bottom: 10px; }
+    .intro p  { font-size: 14px; color: #555; margin-bottom: 8px; }
+    .intro ul { padding-left: 18px; font-size: 14px; color: #555; }
+    .intro ul li { margin-bottom: 4px; }
+
+    /* ── Flow diagram ── */
+    .flow {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0;
+      margin-bottom: 52px;
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px 24px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    }
+    .flow-step {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 0;
+    }
+    .flow-step .num {
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      background: #6b5b95;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .flow-step .label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #444;
+      white-space: nowrap;
+    }
+    .flow-arrow {
+      color: #bbb;
+      font-size: 18px;
+      padding: 0 6px;
+      flex-shrink: 0;
+    }
+
+    /* ── Steps ── */
+    .step {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+      margin-bottom: 40px;
+      overflow: hidden;
+    }
+    .step-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+      padding: 24px 28px 20px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .step-num {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: #6b5b95;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .step-title h3 { font-size: 18px; font-weight: 700; color: #222; margin-bottom: 4px; }
+    .step-title p  { font-size: 14px; color: #666; }
+
+    .step-body { padding: 24px 28px; }
+
+    .step-body h4 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #6b5b95;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 10px;
+      margin-top: 20px;
+    }
+    .step-body h4:first-child { margin-top: 0; }
+
+    .step-body p  { font-size: 14px; color: #555; margin-bottom: 10px; }
+    .step-body ul { padding-left: 18px; font-size: 14px; color: #555; margin-bottom: 10px; }
+    .step-body ul li { margin-bottom: 5px; }
+
+    /* Key field chips */
+    .field-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .field-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #f3f0fa;
+      border: 1px solid #d9d3ee;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 13px;
+    }
+    .field-chip .field-name  { color: #888; font-weight: 500; }
+    .field-chip .field-value { color: #4a3f72; font-weight: 700; }
+
+    /* Note / warning callouts */
+    .callout {
+      display: flex;
+      gap: 12px;
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin: 16px 0;
+      font-size: 13.5px;
+    }
+    .callout-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+    .callout.info    { background: #eef4ff; border-left: 3px solid #4a90d9; }
+    .callout.warning { background: #fff8e6; border-left: 3px solid #f5a623; }
+    .callout.tip     { background: #edfbf3; border-left: 3px solid #2ecc71; }
+    .callout p { margin: 0; color: #444; }
+    .callout strong { color: #222; }
+
+    /* Screenshot */
+    .screenshot-wrap {
+      margin-top: 20px;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #e0e0e0;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    }
+    .screenshot-wrap img {
+      width: 100%;
+      display: block;
+    }
+    .screenshot-caption {
+      background: #f8f8f8;
+      border-top: 1px solid #e8e8e8;
+      padding: 8px 14px;
+      font-size: 12px;
+      color: #888;
+    }
+
+    /* Labor products table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+      margin: 12px 0;
+    }
+    th {
+      background: #6b5b95;
+      color: #fff;
+      text-align: left;
+      padding: 9px 12px;
+      font-weight: 600;
+    }
+    td {
+      padding: 9px 12px;
+      border-bottom: 1px solid #eee;
+      color: #444;
+    }
+    tr:nth-child(even) td { background: #fafafa; }
+    tr:last-child td { border-bottom: none; }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 32px;
+      font-size: 13px;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="badge">Supervisor Role · MES Head</div>
+  <h1>Supervisor Workflow Guide</h1>
+  <p>Step-by-step reference for the full service lifecycle: from CRM opportunity intake through quotation, sale order, repair/work order, and invoice draft.</p>
+  <div class="meta">
+    <span>📅 Last updated: April 22, 2026</span>
+    <span>🔐 Role: Technical Services — Supervisor</span>
+    <span>🌐 Odoo 18 · localhost:8069 · DB: techservices</span>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- Intro -->
+  <div class="intro">
+    <h2>About This Guide</h2>
+    <p>This document walks the MES Head (Supervisor role) through the complete end-to-end workflow for a new client service request. Screenshots are taken from a live Odoo 18 instance.</p>
+    <ul>
+      <li><strong>Login credentials:</strong> <code>meshead@chem.ubc.ca</code></li>
+      <li><strong>Role permissions:</strong> Supervisor inherits Technician rights, plus Sales, Timesheet Approver, and Account Invoicing access.</li>
+      <li><strong>Worktag validation:</strong> A Manager must validate a worktag before an invoice can be posted. The Supervisor creates the order; the Manager approves the worktag.</li>
+    </ul>
+  </div>
+
+  <!-- Flow diagram -->
+  <div class="flow">
+    <div class="flow-step"><span class="num">1</span><span class="label">Login</span></div>
+    <span class="flow-arrow">›</span>
+    <div class="flow-step"><span class="num">2</span><span class="label">CRM Pipeline</span></div>
+    <span class="flow-arrow">›</span>
+    <div class="flow-step"><span class="num">3</span><span class="label">New Opportunity</span></div>
+    <span class="flow-arrow">›</span>
+    <div class="flow-step"><span class="num">4</span><span class="label">Add Notes &amp; Contact</span></div>
+    <span class="flow-arrow">›</span>
+    <div class="flow-step"><span class="num">5</span><span class="label">New Quotation</span></div>
+    <span class="flow-arrow">›</span>
+    <div class="flow-step"><span class="num">6</span><span class="label">Service Type &amp; Worktag</span></div>
+    <span class="flow-arrow">›</span>
+    <div class="flow-step"><span class="num">7</span><span class="label">Confirm → Sale Order</span></div>
+    <span class="flow-arrow">›</span>
+    <div class="flow-step"><span class="num">8</span><span class="label">Repair / Work Order</span></div>
+    <span class="flow-arrow">›</span>
+    <div class="flow-step"><span class="num">9</span><span class="label">Assign to Staff</span></div>
+    <span class="flow-arrow">›</span>
+    <div class="flow-step"><span class="num">10</span><span class="label">Invoice Draft</span></div>
+  </div>
+
+  <!-- ─────────────────────────────── STEP 1 ─────────────────────────────── -->
+  <div class="step" id="step-1">
+    <div class="step-header">
+      <div class="step-num">1</div>
+      <div class="step-title">
+        <h3>Log In as MES Head</h3>
+        <p>Navigate to the Odoo login page and authenticate with the Supervisor account.</p>
+      </div>
+    </div>
+    <div class="step-body">
+      <h4>How To</h4>
+      <ul>
+        <li>Go to <strong>http://localhost:8069</strong> and select the <strong>techservices</strong> database.</li>
+        <li>Enter email <code>meshead@chem.ubc.ca</code> and the assigned password, then click <strong>Log In</strong>.</li>
+        <li>The app opens at the <strong>Discuss → Inbox</strong> view. The top-right corner shows <strong>MES</strong> confirming the correct account.</li>
+      </ul>
+
+      <div class="callout info">
+        <span class="callout-icon">ℹ️</span>
+        <p>The Supervisor role grants access to CRM, Sales, Repairs, Timesheets, and Invoicing views. Settings and inventory product creation are restricted to the Manager role.</p>
+      </div>
+
+      <div class="screenshot-wrap">
+        <img src="screenshots/01_login_dashboard.png" alt="MES Head logged in — Discuss Inbox" />
+        <div class="screenshot-caption">Step 1 — Logged in as MES Head. Discuss inbox confirms correct session.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────── STEP 2 ─────────────────────────────── -->
+  <div class="step" id="step-2">
+    <div class="step-header">
+      <div class="step-num">2</div>
+      <div class="step-title">
+        <h3>Open the CRM Pipeline</h3>
+        <p>Navigate to the CRM module to view and manage service opportunities.</p>
+      </div>
+    </div>
+    <div class="step-body">
+      <h4>How To</h4>
+      <ul>
+        <li>Click the <strong>main menu grid</strong> (top-left) and open <strong>CRM</strong>, or navigate directly to <code>/odoo/crm</code>.</li>
+        <li>The Kanban pipeline shows stages: <strong>New</strong>, <strong>Needs information or actions</strong>, and <strong>Won</strong>.</li>
+        <li>The default filter is <strong>My Pipeline</strong> — showing only opportunities assigned to the current user.</li>
+      </ul>
+
+      <div class="callout tip">
+        <span class="callout-icon">💡</span>
+        <p>Switch to <strong>List view</strong> (icon top-right) for a faster overview when managing many opportunities at once.</p>
+      </div>
+
+      <div class="screenshot-wrap">
+        <img src="screenshots/02_crm_pipeline.png" alt="CRM Pipeline — Kanban view" />
+        <div class="screenshot-caption">Step 2 — CRM Pipeline in Kanban view showing current opportunities.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────── STEP 3 & 4 ─────────────────────────── -->
+  <div class="step" id="step-3">
+    <div class="step-header">
+      <div class="step-num">3</div>
+      <div class="step-title">
+        <h3>Create a New Opportunity &amp; Add Internal Notes / New Contact</h3>
+        <p>Open the full opportunity form, create a new client contact, and record intake details as internal notes.</p>
+      </div>
+    </div>
+    <div class="step-body">
+      <h4>How To — New Opportunity</h4>
+      <ul>
+        <li>Switch to <strong>List view</strong> and click the <strong>New</strong> button (top-left) to open the full opportunity form.</li>
+        <li>Enter a descriptive title in the opportunity name field (e.g. <em>"Instrument Calibration &amp; Repair Request"</em>).</li>
+        <li>The <strong>Salesperson</strong> is auto-set to <em>MES Head</em>.</li>
+      </ul>
+
+      <h4>How To — Add a New Contact</h4>
+      <ul>
+        <li>Click the <strong>Contact</strong> field and type the new client's name.</li>
+        <li>Select <strong>Create and edit…</strong> from the dropdown to open the contact dialog.</li>
+        <li>Select <strong>Individual</strong>, fill in <em>Name</em>, <em>Phone</em>, and <em>Email</em>, then click <strong>Save &amp; Close</strong>.</li>
+        <li>The contact's email and phone will populate back on the opportunity form.</li>
+      </ul>
+
+      <div class="screenshot-wrap">
+        <img src="screenshots/03_create_contact_dialog.png" alt="Create Contact dialog" />
+        <div class="screenshot-caption">Step 3a — Creating a new Individual contact with phone and email from within the opportunity form.</div>
+      </div>
+
+      <h4>How To — Add Internal Notes</h4>
+      <ul>
+        <li>With the contact saved, click the <strong>Internal Notes</strong> tab on the opportunity form.</li>
+        <li>Click inside the text area and type your intake notes — instrument details, priority, timeline, and any pre-authorized spend limits.</li>
+        <li>Click the <strong>save icon</strong> (cloud ☁) in the breadcrumb to save the record.</li>
+      </ul>
+
+      <div class="callout warning">
+        <span class="callout-icon">⚠️</span>
+        <p><strong>Internal Notes are private</strong> — they are visible only to Odoo users, not to the client. Use the <em>Send message</em> button at the bottom for client-facing communication.</p>
+      </div>
+
+      <div class="screenshot-wrap">
+        <img src="screenshots/04_opportunity_with_notes.png" alt="Opportunity with Internal Notes filled in" />
+        <div class="screenshot-caption">Step 3b — Opportunity form with new contact (Dr. Sarah Mitchell) and internal intake notes recorded.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────── STEP 4 ─────────────────────────────── -->
+  <div class="step" id="step-4">
+    <div class="step-header">
+      <div class="step-num">4</div>
+      <div class="step-title">
+        <h3>Create a Quotation</h3>
+        <p>Generate a quotation directly from the opportunity using the <strong>New Quotation</strong> button.</p>
+      </div>
+    </div>
+    <div class="step-body">
+      <h4>How To</h4>
+      <ul>
+        <li>From the saved opportunity, click <strong>New Quotation</strong> in the action bar (top-left).</li>
+        <li>The quotation form opens pre-filled with the customer and opportunity name.</li>
+        <li>The <strong>Expiration</strong> date defaults to 30 days out.</li>
+      </ul>
+
+      <div class="screenshot-wrap">
+        <img src="screenshots/05_new_quotation.png" alt="New Quotation form" />
+        <div class="screenshot-caption">Step 4 — New Quotation form pre-populated from the opportunity. Service Type is required (highlighted in red if missing).</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────── STEP 5 ─────────────────────────────── -->
+  <div class="step" id="step-5">
+    <div class="step-header">
+      <div class="step-num">5</div>
+      <div class="step-title">
+        <h3>Add Service Type, Worktag &amp; Labor Product</h3>
+        <p>Select the appropriate service classification and billing worktag, then add the labor order line.</p>
+      </div>
+    </div>
+    <div class="step-body">
+      <h4>Service Type (required)</h4>
+      <p>Click the <strong>Service Type</strong> dropdown and choose the category that best describes the work:</p>
+      <table>
+        <thead><tr><th>Option</th><th>When to use</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Repair</strong></td><td>Fixing or restoring a faulty instrument</td></tr>
+          <tr><td><strong>Manufacturing</strong></td><td>Building or fabricating a component</td></tr>
+          <tr><td><strong>Move</strong></td><td>Relocating equipment between labs</td></tr>
+          <tr><td><strong>Installation</strong></td><td>Setting up new equipment on-site</td></tr>
+          <tr><td><strong>Maintenance</strong></td><td>Scheduled preventive maintenance</td></tr>
+        </tbody>
+      </table>
+
+      <h4>Worktag</h4>
+      <ul>
+        <li>Click the <strong>Worktag</strong> field and type the code (e.g. <code>CALREP-2026-001</code>).</li>
+        <li>Worktags are filtered to those linked to the customer's commercial partner — only matching worktags appear.</li>
+        <li>When a worktag is selected, the <strong>Speedchart</strong> field auto-populates from the worktag record.</li>
+        <li>⚠️ Worktags must be <strong>validated by a Manager</strong> before an invoice can be posted.</li>
+      </ul>
+
+      <div class="callout info">
+        <span class="callout-icon">ℹ️</span>
+        <p><strong>No worktags showing?</strong> The worktag's <em>Company</em> field must be set to the customer's commercial partner. If the customer is an individual with no parent company, the worktag's Company should match that individual's partner record. Ask the Manager to create the worktag if none exist.</p>
+      </div>
+
+      <h4>Labor Product (Order Lines)</h4>
+      <p>Click <strong>Add a product</strong> in the Order Lines tab and select the appropriate labor product. There are four labor products — choose based on client category:</p>
+      <table>
+        <thead><tr><th>Product</th><th>Client Category</th></tr></thead>
+        <tbody>
+          <tr><td>Work order / repair order for <strong>Chemistry client</strong> – Labor</td><td>UBC Chemistry department</td></tr>
+          <tr><td>Work order / repair order for <strong>UBC (external) client</strong> – Labor</td><td>Other UBC departments</td></tr>
+          <tr><td>Work order / repair order for <strong>External to UBC or private client</strong> – Labor</td><td>Non-UBC / private clients</td></tr>
+          <tr><td>Work order / repair order for <strong>Departmental service client</strong> – Labor</td><td>Internal MES department service</td></tr>
+        </tbody>
+      </table>
+
+      <div class="field-row">
+        <span class="field-chip"><span class="field-name">Service Type</span><span class="field-value">Repair</span></span>
+        <span class="field-chip"><span class="field-name">Worktag</span><span class="field-value">CALREP-2026-001</span></span>
+        <span class="field-chip"><span class="field-name">Speedchart</span><span class="field-value">MITCH-LAB (auto)</span></span>
+        <span class="field-chip"><span class="field-name">Labor Product</span><span class="field-value">External – Labor @ $100</span></span>
+      </div>
+
+      <div class="screenshot-wrap">
+        <img src="screenshots/06_quotation_with_service_worktag.png" alt="Quotation with Service Type, Worktag, and Labor product" />
+        <div class="screenshot-caption">Step 5 — Quotation complete: Service Type = Repair, Worktag = CALREP-2026-001, Speedchart auto-filled, labor product added with 12% GST+PST BC tax.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────── STEP 6 ─────────────────────────────── -->
+  <div class="step" id="step-6">
+    <div class="step-header">
+      <div class="step-num">6</div>
+      <div class="step-title">
+        <h3>Confirm Quotation → Sales Order</h3>
+        <p>Confirm the quotation to lock in pricing and generate the sales order and linked repair order.</p>
+      </div>
+    </div>
+    <div class="step-body">
+      <h4>How To</h4>
+      <ul>
+        <li>Review all fields, then click <strong>Confirm</strong> in the action bar.</li>
+        <li>The status bar moves to <strong>Sales Order</strong> and the record is assigned a number (e.g. <em>S00081</em>).</li>
+        <li>A <strong>Repairs</strong> smart button appears automatically — the system creates a linked repair order from the labor product line.</li>
+      </ul>
+
+      <div class="callout tip">
+        <span class="callout-icon">💡</span>
+        <p>Once confirmed, the order date and pricing are locked. To make changes, cancel and recreate, or use the <em>Lock/Unlock</em> controls visible to managers.</p>
+      </div>
+
+      <div class="screenshot-wrap">
+        <img src="screenshots/07_sales_order_confirmed.png" alt="Confirmed Sales Order S00081" />
+        <div class="screenshot-caption">Step 6 — Sales Order S00081 confirmed. The Repairs smart button (top center) shows 1 linked repair order created automatically.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────── STEP 7 ─────────────────────────────── -->
+  <div class="step" id="step-7">
+    <div class="step-header">
+      <div class="step-num">7</div>
+      <div class="step-title">
+        <h3>Open the Repair / Work Order</h3>
+        <p>Access the auto-created repair order and review its details before assigning it to a technician.</p>
+      </div>
+    </div>
+    <div class="step-body">
+      <h4>How To</h4>
+      <ul>
+        <li>From the confirmed sales order, click the <strong>Repairs</strong> smart button (top bar).</li>
+        <li>The repair order opens pre-filled with the customer, opportunity, service type, scheduled date, and responsible user.</li>
+        <li>The stage bar shows: <strong>New → Confirmed → Under Repair → Repaired</strong>. New repair orders created from a confirmed sale land in <strong>Confirmed</strong>.</li>
+        <li>The <strong>Parts</strong> tab is where technicians add physical components used during the repair.</li>
+        <li>The <strong>Timesheets</strong> tab records labour hours against this order.</li>
+      </ul>
+
+      <div class="screenshot-wrap">
+        <img src="screenshots/08_repair_order.png" alt="Repair Order WH/RO/00057" />
+        <div class="screenshot-caption">Step 7 — Repair Order WH/RO/00057 in Confirmed state. Linked to Sale Order S00081 via the smart button (top center).</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────── STEP 8 ─────────────────────────────── -->
+  <div class="step" id="step-8">
+    <div class="step-header">
+      <div class="step-num">8</div>
+      <div class="step-title">
+        <h3>Assign the Repair Order to a Technician</h3>
+        <p>Change the <em>Responsible</em> field to the technician who will carry out the work.</p>
+      </div>
+    </div>
+    <div class="step-body">
+      <h4>How To</h4>
+      <ul>
+        <li>Click the <strong>Responsible</strong> field (right column of the repair order header).</li>
+        <li>Clear the current value and type the technician's name (e.g. <em>Tech 1</em>).</li>
+        <li>Select the correct user from the dropdown and save the record using the cloud save icon.</li>
+      </ul>
+
+      <div class="callout tip">
+        <span class="callout-icon">💡</span>
+        <p>The assigned technician will see this repair order in their own CRM/Repair queue filtered by <em>My Pipeline</em>. They can also log timesheet entries directly from the repair order's <strong>Timesheets</strong> tab.</p>
+      </div>
+
+      <div class="screenshot-wrap">
+        <img src="screenshots/09_repair_assigned_to_staff.png" alt="Repair order assigned to Tech 1" />
+        <div class="screenshot-caption">Step 8 — Repair order WH/RO/00057 assigned to Tech 1. Record saved.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────── STEP 9 ─────────────────────────────── -->
+  <div class="step" id="step-9">
+    <div class="step-header">
+      <div class="step-num">9</div>
+      <div class="step-title">
+        <h3>Create Invoice Draft</h3>
+        <p>Return to the sales order and generate a draft invoice to be reviewed before posting.</p>
+      </div>
+    </div>
+    <div class="step-body">
+      <h4>Pre-requisite: Worktag Validation</h4>
+      <div class="callout warning">
+        <span class="callout-icon">⚠️</span>
+        <p><strong>A Manager must validate the worktag before this step succeeds.</strong> If the worktag's <em>Validated</em> checkbox is not checked, Odoo will block invoice creation with the error: <em>"worktag has not been validated — a manager must check the Validated field on the worktag first."</em></p>
+      </div>
+
+      <h4>How To</h4>
+      <ul>
+        <li>Click <strong>S00081</strong> in the breadcrumb to return to the sales order, or use the <strong>Sale Orders</strong> smart button from the invoice/repair view.</li>
+        <li>Click <strong>Create Invoice</strong> (top-left action bar).</li>
+        <li>The dialog defaults to <strong>Regular invoice</strong> — leave this selected.</li>
+        <li>Click <strong>Create Draft</strong>.</li>
+        <li>The draft invoice opens showing status <strong>Draft</strong> with all invoice lines, taxes, worktag, and customer details pre-populated.</li>
+      </ul>
+
+      <div class="screenshot-wrap">
+        <img src="screenshots/10_create_invoice_dialog.png" alt="Create Invoice dialog" />
+        <div class="screenshot-caption">Step 9a — Create Invoice(s) dialog. Select "Regular invoice" and click Create Draft.</div>
+      </div>
+
+      <div class="screenshot-wrap">
+        <img src="screenshots/11_invoice_draft.png" alt="Draft Customer Invoice" />
+        <div class="screenshot-caption">Step 9b — Draft Customer Invoice created. Shows customer, opportunity, service type (Repair), worktag (CALREP-2026-001), labor product line at $100 + 12% GST/PST BC. Ready for Manager review and posting.</div>
+      </div>
+
+      <h4>What Happens Next</h4>
+      <ul>
+        <li>The Supervisor's job ends here — the draft invoice sits in <strong>Accounting → Customer Invoices</strong> with status <strong>Draft</strong>.</li>
+        <li>A <strong>Manager</strong> reviews the invoice and clicks <strong>Confirm</strong> to post it and generate the journal entries.</li>
+        <li>Once posted, the invoice can be emailed to the client directly from Odoo.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Summary table -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-num" style="background:#2c7a4b;">✓</div>
+      <div class="step-title">
+        <h3>Workflow Summary</h3>
+        <p>Quick reference for the complete Supervisor workflow sequence.</p>
+      </div>
+    </div>
+    <div class="step-body">
+      <table>
+        <thead>
+          <tr><th>#</th><th>Action</th><th>Location</th><th>Key Field / Button</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>Login as MES Head</td><td><code>/odoo/login</code></td><td>Email: meshead@chem.ubc.ca</td></tr>
+          <tr><td>2</td><td>Open CRM Pipeline</td><td>CRM → Pipeline</td><td>Main menu grid</td></tr>
+          <tr><td>3</td><td>Create Opportunity</td><td>CRM → New (list view)</td><td>Opportunity title</td></tr>
+          <tr><td>4</td><td>Add Contact &amp; Internal Notes</td><td>Opportunity form</td><td>Contact field → Create and edit… / Internal Notes tab</td></tr>
+          <tr><td>5</td><td>Create Quotation</td><td>Opportunity → New Quotation</td><td>New Quotation button</td></tr>
+          <tr><td>6</td><td>Set Service Type</td><td>Quotation form</td><td>Service Type dropdown (required)</td></tr>
+          <tr><td>7</td><td>Select Worktag</td><td>Quotation form</td><td>Worktag field (auto-fills Speedchart)</td></tr>
+          <tr><td>8</td><td>Add Labor Product</td><td>Quotation → Order Lines tab</td><td>Add a product → one of 4 labor products</td></tr>
+          <tr><td>9</td><td>Confirm → Sales Order</td><td>Quotation form</td><td>Confirm button</td></tr>
+          <tr><td>10</td><td>Open Repair Order</td><td>Sales Order → Repairs smart button</td><td>Repairs N smart button</td></tr>
+          <tr><td>11</td><td>Assign to Technician</td><td>Repair Order form</td><td>Responsible field</td></tr>
+          <tr><td>12</td><td>Create Invoice Draft</td><td>Sales Order → Create Invoice</td><td>Create Invoice → Create Draft (requires validated worktag)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<footer>
+  Generated from live Odoo 18 session · techservices database · April 22, 2026
+</footer>
+
+</body>
+</html>
