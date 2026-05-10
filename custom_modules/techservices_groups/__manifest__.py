@@ -16,6 +16,7 @@
         'sale_crm',
         'sale_management',
         'repair',
+        'opportunity_display',
     ],
     'data': [
         'security/techservices_groups.xml',
