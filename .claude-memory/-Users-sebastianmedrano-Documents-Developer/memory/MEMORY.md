@@ -1,0 +1,6 @@
+# Memory Index
+
+- [Odoo Dev Environment](project_odoo_dev.md) — Docker setup, live DB is `techservices`, upgrade workflow
+- [instrument_registry module](project_instrument_registry.md) — Module structure, models, document view state, known gaps
+- [Odoo _get_view options format](feedback_odoo_view_options.md) — Use ast.literal_eval + str(), not json — Odoo JS requires Python True/False
+- [techservices_groups module](project_techservices_groups.md) — Roles, inventory menu restrictions, product form fields/restrictions, Supplier contact type
