@@ -1,5 +1,6 @@
 # Odoo filestore and database data - never commit these
 data/
+!custom_modules/*/data/
 *.pyc
 __pycache__/
 
