@@ -13,6 +13,7 @@
                 <field name="partner_id"/>
                 <field name="status" decoration-danger="status == 'inactive'" decoration-success="status == 'active'"/>
                 <field name="validated" widget="boolean" decoration-success="validated == True" decoration-warning="validated == False"/>
+                <field name="date_created" optional="show"/>
             </list>
         </field>
     </record>

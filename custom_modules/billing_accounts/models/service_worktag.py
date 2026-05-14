@@ -40,6 +40,8 @@ class ServiceWorktag(models.Model):
         ondelete='restrict',
     )
 
+    date_created = fields.Datetime(string='Created on', related='create_date', store=False)
+
     _sql_constraints = [
         ('unique_code', 'UNIQUE(code)', 'A worktag with this code already exists.'),
         ('unique_speedchart', 'UNIQUE(speedchart)', 'A worktag with this speedchart already exists.'),
