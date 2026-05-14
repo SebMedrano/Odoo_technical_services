@@ -23,4 +23,16 @@
             </xpath>
         </field>
     </record>
+
+    <record id="view_partner_list_date_created" model="ir.ui.view">
+        <field name="name">res.partner.list.date.created</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list" position="inside">
+                <field name="is_company" invisible="1"/>
+                <field name="date_created" invisible="is_company"/>
+            </xpath>
+        </field>
+    </record>
 </odoo>

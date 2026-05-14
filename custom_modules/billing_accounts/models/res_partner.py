@@ -9,3 +9,5 @@ class ResPartner(models.Model):
         inverse_name='partner_id',
         string='Worktags',
     )
+
+    date_created = fields.Datetime(string='Added on', related='create_date', store=False)
