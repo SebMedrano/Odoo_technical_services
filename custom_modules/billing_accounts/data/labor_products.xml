@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="product_labor_chemistry" model="product.template">
+            <field name="name">Work order / repair order for Chemistry client - Labor</field>
+            <field name="type">service</field>
+            <field name="invoice_policy">order</field>
+            <field name="service_client_category">chemistry</field>
+
+        </record>
+
+        <record id="product_labor_ubc" model="product.template">
+            <field name="name">Work order / repair order for UBC (external) client - Labor</field>
+            <field name="type">service</field>
+            <field name="invoice_policy">order</field>
+            <field name="service_client_category">ubc</field>
+
+        </record>
+
+        <record id="product_labor_external" model="product.template">
+            <field name="name">Work order / repair order for External to UBC or private client - Labor</field>
+            <field name="type">service</field>
+            <field name="invoice_policy">order</field>
+            <field name="service_client_category">external</field>
+
+        </record>
+
+        <record id="product_labor_department" model="product.template">
+            <field name="name">Work order / repair order for Departmental service client - Labor</field>
+            <field name="type">service</field>
+            <field name="invoice_policy">order</field>
+            <field name="service_client_category">department</field>
+
+        </record>
+
+    </data>
+</odoo>

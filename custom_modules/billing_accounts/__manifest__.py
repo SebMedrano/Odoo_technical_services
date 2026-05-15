@@ -12,6 +12,7 @@
     ],
     'data': [
         'security/ir.model.access.csv',
+        'data/labor_products.xml',
         'views/service_worktag_views.xml',
         'views/res_partner_views.xml',
         'views/product_template_views.xml',
