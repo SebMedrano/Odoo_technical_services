@@ -36,21 +36,29 @@ Go to: http://localhost:8069
 
 On the database manager screen:
 - Master Password: (leave empty first time, or set one)
-- Database Name: odoo_dev
+- Database Name: techservices
 - Email: admin@example.com
 - Password: admin
 - Language: English
 - Country: (your country)
-- Demo data: YES for dev, NO for production
+- Demo data: NO (use `--without-demo=all` on CLI installs)
 
-### 4. Install required modules
+### 4. Install all custom modules (fresh install)
 
-After login, go to Apps and install:
-- Repair
-- Timesheets
-- Inventory
-- Invoicing
-- Analytic Accounting
+Use this command to install Odoo's required apps and all custom modules in one shot.
+Always use a shell variable for the module list — long one-liners get mangled by SSH terminals.
+
+```bash
+MODS="sale_management,account_accountant,crm,repair,project,techservices_groups,instrument_registry,repair_timesheet,opportunity_display,billing_accounts,project_parts"
+docker compose run --rm odoo odoo -d techservices -i "$MODS" --without-demo=all --stop-after-init
+docker compose up -d
+```
+
+> **Note:** Use `docker compose run --rm` (not `docker exec`) — running `docker exec` while the
+> container is up causes a port 8069 conflict and the install fails silently.
+
+After the install finishes, go to Settings → Users → Administrator → Technical Services → Manager
+to assign the admin role (must be done via the UI, not direct DB insert).
 
 ---
 
@@ -93,11 +101,15 @@ After editing code in the `custom_modules/` folder:
 
 **Option B — Via command line (faster):**
 ```bash
-docker exec odoo18_dev odoo -u your_module_name -d odoo_dev --stop-after-init
-docker compose restart odoo
+docker compose run --rm odoo odoo -u your_module_name -d techservices --stop-after-init
+docker compose up -d
 ```
 
 Replace `your_module_name` with your actual module name (e.g. `repair_timesheet`).
+
+> **Why `run --rm` and not `docker exec`?** Running `docker exec` against a live container
+> triggers a port 8069 conflict — the upgrade command fails. `docker compose run --rm` spins up
+> a separate, temporary container that exits cleanly after `--stop-after-init`.
 
 ---
 
@@ -129,9 +141,12 @@ If you want to inspect the database with a tool like DBeaver or TablePlus:
 
 - Host: localhost
 - Port: 5432
-- Database: odoo_dev
+- Database: techservices
 - User: odoo
 - Password: odoo_dev_password
+
+> **On a VM:** The host likely runs a local Postgres on 5432. Remove `ports: ["5432:5432"]`
+> from the `db` service in `docker-compose.yml` to avoid the conflict.
 
 ---
 
