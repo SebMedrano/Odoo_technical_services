@@ -10,7 +10,7 @@ class ServiceInstrument(models.Model):
     _name = 'service.instrument'
     _description = 'Service Instrument'
     _inherit = ['mail.thread', 'mail.activity.mixin']
-    _rec_name = 'display_name'
+    _rec_names_search = ['make', 'model', 'serial_number', 'partner_id.name']
 
     name = fields.Char(string='Reference', readonly=True, default='New')
     make = fields.Char(string='Make', required=True, tracking=True)
