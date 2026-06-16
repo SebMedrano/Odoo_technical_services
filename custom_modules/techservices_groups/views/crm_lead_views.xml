@@ -17,8 +17,10 @@
                 <attribute name="groups">techservices_groups.group_manager</attribute>
             </xpath>
             <!-- Disable quick-create on Contact field; only "Create and edit" allowed -->
+            <!-- Rename Contact label -->
             <xpath expr="//group[@name='opportunity_partner']//field[@name='partner_id']" position="attributes">
                 <attribute name="options">{'no_quick_create': True}</attribute>
+                <attribute name="string">Registered contacts (select or register appropriate)</attribute>
             </xpath>
         </field>
     </record>
@@ -35,6 +37,29 @@
             </xpath>
             <xpath expr="//button[@name='iap_enrich'][2]" position="attributes">
                 <attribute name="groups">techservices_groups.group_manager</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Move contact_name from Extra Information tab to Internal Notes tab, renamed -->
+
+    <record id="crm_lead_view_form_contact_name_move" model="ir.ui.view">
+        <field name="name">crm.lead.view.form.contact.name.move</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <!-- Hide label and field row in Extra Information tab -->
+            <xpath expr="//page[@name='lead']//label[@for='contact_name_page_lead']" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+            <xpath expr="//page[@name='lead']//div[field[@name='contact_name']]" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+            <!-- Add renamed field at the top of Internal Notes tab -->
+            <xpath expr="//page[@name='internal_notes']/field[@name='description']" position="before">
+                <group>
+                    <field name="contact_name" string="Provided Contact Name"/>
+                </group>
             </xpath>
         </field>
     </record>

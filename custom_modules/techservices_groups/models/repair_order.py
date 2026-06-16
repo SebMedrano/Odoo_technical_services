@@ -21,4 +21,7 @@ class RepairOrder(models.Model):
                     opts = {}
                 opts['no_quick_create'] = True
                 node.set('options', str(opts))
+            for fname in ('repair_line_type', 'quantity', 'picked', 'date', 'date_deadline'):
+                for node in arch.xpath(f"//field[@name='move_ids']//field[@name='{fname}']"):
+                    node.set('column_invisible', 'True')
         return arch, view
