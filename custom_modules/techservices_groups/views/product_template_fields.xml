@@ -13,8 +13,12 @@
             <field name="arch" type="xml">
                 <xpath expr="//group[@name='group_general']/field[@name='type']" position="after">
                     <field name="x_make" placeholder="e.g. Agilent, Thermo Fisher"/>
+                    <field name="x_make_part_number" placeholder="e.g. ABC-1234"/>
                     <field name="x_supplier_id" placeholder="e.g. VWR Scientific"/>
                     <field name="x_supplier_part_number" placeholder="e.g. 12345-678"/>
+                    <div class="text-muted small fst-italic" colspan="2">
+                        Add any additional suppliers in the internal notes section
+                    </div>
                 </xpath>
             </field>
         </record>

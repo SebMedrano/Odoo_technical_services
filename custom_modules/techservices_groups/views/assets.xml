@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <data>
+        <record id="techservices_company_type_field_asset" model="ir.asset">
+            <field name="name">techservices_groups: company type no supplier widget</field>
+            <field name="bundle">web.assets_backend</field>
+            <field name="path">techservices_groups/static/src/company_type_field.js</field>
+        </record>
+
         <record id="techservices_hide_messaging_menu_asset" model="ir.asset">
             <field name="name">techservices_groups: hide messaging menu</field>
             <field name="bundle">web.assets_backend</field>

@@ -10,8 +10,6 @@ class ResPartner(models.Model):
 
     @api.onchange('parent_id')
     def _onchange_parent_id_department_unit(self):
-        # When an individual is linked to a company, inherit the company's
-        # Department / Unit as the default value (can still be overridden).
         if self.parent_id and self.parent_id.x_department_unit:
             self.x_department_unit = self.parent_id.x_department_unit
 

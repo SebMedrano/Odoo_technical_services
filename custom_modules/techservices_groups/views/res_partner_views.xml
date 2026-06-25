@@ -3,15 +3,7 @@
     <data>
         <!--
             DEPARTMENT / UNIT FIELD
-            ══════════════════════════════════════════════════════════════════
-
-            Adds x_department_unit to the main contact form.  The field is:
-              - visible only when Company type is selected
-              - required when Company type is selected (mandatory for reporting)
-
-            Placed after the "Job Position" field (function), which is itself
-            hidden for companies, so the two fields never appear together and
-            the form stays uncluttered.
+            Adds x_department_unit to the main contact form.
         -->
         <record id="res_partner_form_add_department_unit" model="ir.ui.view">
             <field name="name">res.partner.form.department.unit.techservices</field>
@@ -19,13 +11,6 @@
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='function']" position="after">
-                    <!--
-                        Visible for:
-                          - Company contacts (required)
-                          - Individual contacts linked to a parent company
-                            (optional — inherited from parent via onchange)
-                        Hidden for standalone individuals and Suppliers.
-                    -->
                     <field name="x_department_unit"
                            placeholder="e.g. Chemistry, Genomics"
                            invisible="company_type != 'company' and not parent_id"
@@ -33,5 +18,42 @@
                 </xpath>
             </field>
         </record>
+
+        <!-- Hide 'Supplier' from the company_type radio on the contact form -->
+        <record id="res_partner_form_hide_supplier_type" model="ir.ui.view">
+            <field name="name">res.partner.form.hide.supplier.type.techservices</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='company_type']" position="attributes">
+                    <attribute name="widget">company_type_no_supplier</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Exclude suppliers from the main Contacts list -->
+        <record id="contacts.action_contacts" model="ir.actions.act_window">
+            <field name="domain">[('is_supplier', '=', False)]</field>
+        </record>
+
+        <!-- SUPPLIERS LIST VIEW (Inventory > Products > Suppliers) -->
+        <record id="action_inventory_suppliers" model="ir.actions.act_window">
+            <field name="name">Suppliers</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">list,form</field>
+            <field name="domain">[('is_supplier', '=', True)]</field>
+            <field name="context">{
+                'default_is_supplier': True,
+                'default_is_company': True,
+            }</field>
+        </record>
+
+        <menuitem
+            id="menu_inventory_suppliers"
+            name="Suppliers"
+            parent="stock.menu_stock_inventory_control"
+            action="action_inventory_suppliers"
+            sequence="30"/>
+
     </data>
 </odoo>

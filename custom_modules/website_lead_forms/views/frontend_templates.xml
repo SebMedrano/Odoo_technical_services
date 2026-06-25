@@ -15,7 +15,7 @@
                                 </div>
                             </t>
 
-                            <form t-attf-action="/contact/#{form.slug}/submit" method="post" novalidate="novalidate">
+                            <form t-attf-action="/contact/#{form.slug}/preview" method="post" novalidate="novalidate">
 
                                 <div class="row g-3">
                                     <div class="col-md-6">
@@ -53,7 +53,7 @@
                                     </div>
                                     <div class="col-12">
                                         <button type="submit" class="btn btn-primary px-4">
-                                            Send Message
+                                            Preview before submission
                                         </button>
                                     </div>
                                 </div>
@@ -80,7 +80,7 @@
                                 </div>
                             </t>
 
-                            <form t-attf-action="/contact/#{form.slug}/submit" method="post" novalidate="novalidate">
+                            <form t-attf-action="/contact/#{form.slug}/preview" method="post" novalidate="novalidate">
                                 <div class="row g-3">
 
                                     <!-- Contact -->
@@ -165,11 +165,27 @@
 
                                     <!-- Repair info -->
                                     <div class="col-12">
+                                        <label class="form-label fw-semibold" for="work_location">Location where the work is required or instrument is usually located</label>
+                                        <input type="text" class="form-control" id="work_location"
+                                            name="work_location"
+                                            t-att-value="post.get('work_location', '')"/>
+                                    </div>
+                                    <div class="col-12">
                                         <label class="form-label fw-semibold" for="repair_info">
                                             If this request is for a repair (answer as best as you know): Make, model, serial number
                                         </label>
                                         <textarea class="form-control" id="repair_info" name="repair_info"
                                             rows="3"><t t-esc="post.get('repair_info', '')"/></textarea>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-semibold" for="delivered_to_shop">For repair purposes, has the instrument been delivered to the shop?</label>
+                                        <select class="form-select" id="delivered_to_shop" name="delivered_to_shop">
+                                            <option value="">-- Select --</option>
+                                            <option value="Yes"
+                                                t-att-selected="post.get('delivered_to_shop') == 'Yes'">Yes</option>
+                                            <option value="No"
+                                                t-att-selected="post.get('delivered_to_shop') == 'No'">No</option>
+                                        </select>
                                     </div>
 
                                     <!-- Message -->
@@ -181,11 +197,136 @@
 
                                     <div class="col-12">
                                         <button type="submit" class="btn btn-primary px-4">
-                                            Send Message
+                                            Preview before submission
                                         </button>
                                     </div>
                                 </div>
                             </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="contact_form_preview" name="Contact Form - Preview">
+        <t t-call="website.layout">
+            <style>
+                @media print {
+                    @page { margin: 1.5cm; }
+                    .no-print { display: none !important; }
+                    header, footer, nav,
+                    .o_main_navbar, .o_header_standard,
+                    #oe_main_menu_navbar { display: none !important; }
+                    .print-container {
+                        border: none !important;
+                        box-shadow: none !important;
+                        background: white !important;
+                    }
+                }
+            </style>
+            <div id="wrap">
+                <div class="container py-5">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8 col-md-10">
+
+                            <h2 class="mb-1">Review your submission</h2>
+                            <p class="text-muted mb-4">Please review the information below before submitting your ticket.</p>
+
+                            <div class="print-container border rounded p-4 mb-4" style="background:#fafafa">
+
+                                <!-- Standard fields (all templates) -->
+                                <table class="table table-sm table-borderless mb-0">
+                                    <tbody>
+                                        <tr t-if="post.get('contact_name')">
+                                            <td class="fw-semibold text-nowrap" style="width:40%">Name</td>
+                                            <td t-esc="post.get('contact_name')"/>
+                                        </tr>
+                                        <tr t-if="post.get('email_from')">
+                                            <td class="fw-semibold">Email</td>
+                                            <td t-esc="post.get('email_from')"/>
+                                        </tr>
+                                        <tr t-if="post.get('phone')">
+                                            <td class="fw-semibold">Phone</td>
+                                            <td t-esc="post.get('phone')"/>
+                                        </tr>
+                                        <tr t-if="post.get('subject')">
+                                            <td class="fw-semibold">Title of request</td>
+                                            <td t-esc="post.get('subject')"/>
+                                        </tr>
+
+                                        <!-- EES-specific fields -->
+                                        <t t-if="form.template == 'ees'">
+                                            <tr><td colspan="2"><hr class="my-2"/><span class="text-muted small">Academic / Administrative Details</span></td></tr>
+                                            <tr t-if="post.get('supervisor_name')">
+                                                <td class="fw-semibold">Supervisor / Research Group</td>
+                                                <td t-esc="post.get('supervisor_name')"/>
+                                            </tr>
+                                            <tr t-if="post.get('supervisor_email')">
+                                                <td class="fw-semibold">Supervisor's Email</td>
+                                                <td t-esc="post.get('supervisor_email')"/>
+                                            </tr>
+                                            <tr t-if="post.get('worktag')">
+                                                <td class="fw-semibold">Worktag</td>
+                                                <td t-esc="post.get('worktag')"/>
+                                            </tr>
+                                            <tr t-if="post.get('speedchart')">
+                                                <td class="fw-semibold">Speedchart</td>
+                                                <td t-esc="post.get('speedchart')"/>
+                                            </tr>
+                                            <tr t-if="post.get('department')">
+                                                <td class="fw-semibold">Department</td>
+                                                <td t-esc="post.get('department')"/>
+                                            </tr>
+                                            <tr t-if="post.get('priority')">
+                                                <td class="fw-semibold">Priority</td>
+                                                <td t-esc="post.get('priority')"/>
+                                            </tr>
+                                            <tr><td colspan="2"><hr class="my-2"/><span class="text-muted small">Instrument / Repair Details</span></td></tr>
+                                            <tr t-if="post.get('work_location')">
+                                                <td class="fw-semibold">Work Location</td>
+                                                <td t-esc="post.get('work_location')"/>
+                                            </tr>
+                                            <tr t-if="post.get('repair_info')">
+                                                <td class="fw-semibold">Repair Details (Make/Model/Serial)</td>
+                                                <td t-esc="post.get('repair_info')"/>
+                                            </tr>
+                                            <tr t-if="post.get('delivered_to_shop')">
+                                                <td class="fw-semibold">Instrument delivered to shop</td>
+                                                <td t-esc="post.get('delivered_to_shop')"/>
+                                            </tr>
+                                        </t>
+
+                                        <tr t-if="post.get('message')">
+                                            <td colspan="2"><hr class="my-2"/></td>
+                                        </tr>
+                                        <tr t-if="post.get('message')">
+                                            <td class="fw-semibold">Message</td>
+                                            <td style="white-space:pre-wrap" t-esc="post.get('message')"/>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Instruction notice -->
+                            <div class="alert alert-info no-print" role="alert">
+                                <strong>Note:</strong> If you have brought your device or part to the shop, please print (button below) this ticket before submitting and attach the print to your device for our techs to find it.
+                            </div>
+
+                            <!-- Action buttons -->
+                            <div class="d-flex gap-2 no-print">
+                                <button type="button" class="btn btn-outline-secondary"
+                                    onclick="history.back()">&#8592; Go back</button>
+                                <form t-attf-action="/contact/#{form.slug}/submit" method="post" class="d-inline">
+                                    <t t-foreach="post.items()" t-as="field">
+                                        <input type="hidden" t-att-name="field[0]" t-att-value="field[1]"/>
+                                    </t>
+                                    <button type="submit" class="btn btn-primary px-4">Submit ticket</button>
+                                </form>
+                                <button type="button" class="btn btn-outline-primary"
+                                    onclick="window.print()">Print</button>
+                            </div>
+
                         </div>
                     </div>
                 </div>

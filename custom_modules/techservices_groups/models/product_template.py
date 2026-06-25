@@ -8,9 +8,11 @@ class ProductTemplate(models.Model):
         'res.partner',
         string='Supplier',
         domain=[('is_supplier', '=', True)],
+        context={'default_is_supplier': True, 'default_is_company': True},
     )
     x_supplier_part_number = fields.Char(string='Supplier Part Number')
     x_make = fields.Char(string='Make')
+    x_make_part_number = fields.Char(string='Make Part Number')
 
     @api.model
     def _get_view(self, view_id=None, view_type='form', **options):
