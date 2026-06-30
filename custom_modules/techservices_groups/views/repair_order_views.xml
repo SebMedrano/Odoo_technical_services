@@ -4,6 +4,30 @@
     <!-- Hide product_id, under_warranty, picking_id (Return) from Technician/Supervisor.
          Manager role retains full visibility via group inheritance. -->
 
+    <!-- Fix label_selection and badge widgets to include 'blocked' state -->
+
+    <record id="repair_order_list_blocked_techservices" model="ir.ui.view">
+        <field name="name">repair.order.list.blocked.techservices</field>
+        <field name="model">repair.order</field>
+        <field name="inherit_id" ref="repair.view_repair_order_tree"/>
+        <field name="arch" type="xml">
+            <field name="state" position="attributes">
+                <attribute name="decoration-warning">state in ('blocked', 'under_repair')</attribute>
+            </field>
+        </field>
+    </record>
+
+    <record id="repair_order_kanban_blocked_techservices" model="ir.ui.view">
+        <field name="name">repair.order.kanban.blocked.techservices</field>
+        <field name="model">repair.order</field>
+        <field name="inherit_id" ref="repair.view_repair_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='state'][@widget='label_selection']" position="attributes">
+                <attribute name="options">{'classes': {'draft': 'info', 'cancel': 'danger', 'done': 'success', 'under_repair': 'secondary', 'blocked': 'warning'}}</attribute>
+            </xpath>
+        </field>
+    </record>
+
     <record id="view_repair_order_form_techservices" model="ir.ui.view">
         <field name="name">repair.order.form.techservices.groups</field>
         <field name="model">repair.order</field>
@@ -17,6 +41,29 @@
             </xpath>
             <xpath expr="//field[@name='picking_id']" position="attributes">
                 <attribute name="groups">techservices_groups.group_manager</attribute>
+            </xpath>
+
+            <!-- Block / Unblock buttons in header -->
+            <xpath expr="//header/field[@name='state']" position="before">
+                <button name="action_block" type="object" string="Block"
+                        class="btn-warning"
+                        invisible="state not in ('confirmed', 'under_repair')"/>
+                <button name="action_unblock" type="object" string="Unblock"
+                        invisible="state != 'blocked'"/>
+            </xpath>
+
+            <!-- Add blocked to the status bar -->
+            <xpath expr="//field[@name='state'][@widget='statusbar']" position="attributes">
+                <attribute name="statusbar_visible">draft,confirmed,under_repair,blocked,done</attribute>
+            </xpath>
+
+            <!-- Warning banner visible when blocked -->
+            <xpath expr="//header" position="after">
+                <div class="alert alert-warning mb-0" invisible="state != 'blocked'">
+                    <strong>Repair is blocked.</strong>
+                    Please add the reason for the block in the <strong>Log note</strong> below.
+                    E.g. "Waiting for parts", "Waiting for user to provide more information", etc.
+                </div>
             </xpath>
         </field>
     </record>

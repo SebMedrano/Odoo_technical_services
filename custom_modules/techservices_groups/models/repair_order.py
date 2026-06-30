@@ -1,9 +1,25 @@
 import ast
-from odoo import models
+from odoo import fields, models
 
 
 class RepairOrder(models.Model):
     _inherit = 'repair.order'
+
+    state = fields.Selection(
+        selection_add=[('blocked', 'Blocked')],
+        ondelete={'blocked': 'set default'},
+    )
+    x_pre_block_state = fields.Char(copy=False)
+
+    def action_block(self):
+        for repair in self:
+            repair.x_pre_block_state = repair.state
+            repair.state = 'blocked'
+
+    def action_unblock(self):
+        for repair in self:
+            repair.state = repair.x_pre_block_state or 'under_repair'
+            repair.x_pre_block_state = False
 
     def _get_view(self, view_id=None, view_type='form', **options):
         arch, view = super()._get_view(view_id, view_type, **options)

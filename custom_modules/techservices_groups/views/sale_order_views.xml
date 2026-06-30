@@ -24,6 +24,79 @@
         </field>
     </record>
 
+    <!-- Repair order fields on sale order form (visible only when a repair is linked) -->
+
+    <record id="sale_order_form_repair_fields_techservices" model="ir.ui.view">
+        <field name="name">sale.order.form.repair.fields.techservices</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <!-- Load repair fields invisibly so the form can evaluate conditions -->
+            <xpath expr="//field[@name='opportunity_id']" position="after">
+                <field name="x_repair_ids" invisible="1"/>
+                <field name="x_repair_id" invisible="1"/>
+            </xpath>
+            <!-- Repair section above the order lines tabs -->
+            <xpath expr="//notebook" position="before">
+                <group name="repair_info" string="Repair Order" invisible="not x_repair_id">
+                    <field name="x_repair_state" readonly="1"/>
+                    <field name="x_repair_user_id"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Repair status as optional column in sale order list -->
+
+    <record id="sale_order_list_repair_state_techservices" model="ir.ui.view">
+        <field name="name">sale.order.list.repair.state.techservices</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.sale_order_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='invoice_status']" position="after">
+                <field name="x_repair_state"
+                       string="Repair Status"
+                       optional="show"/>
+                <field name="x_repair_user_id"
+                       string="Repair Responsible"
+                       widget="many2one_avatar_user"
+                       optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Add Repair Responsible to Group By in sale order search -->
+
+    <record id="sale_order_search_repair_techservices" model="ir.ui.view">
+        <field name="name">sale.order.search.repair.techservices</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+        <field name="arch" type="xml">
+            <filter name="order_month" position="after">
+                <filter string="Repair Responsible" name="repair_responsible"
+                        domain="[]" context="{'group_by': 'x_repair_user_id'}"/>
+            </filter>
+        </field>
+    </record>
+
+    <!-- CRM quotation form: hide Send by Email button -->
+
+    <record id="sale_order_crm_form_techservices" model="ir.ui.view">
+        <field name="name">sale.order.crm.form.techservices</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <button id="send_by_email_primary" position="attributes">
+                <attribute name="invisible">state != 'draft' or not id</attribute>
+            </button>
+        </field>
+    </record>
+
+    <record id="sale_crm.sale_action_quotations_new" model="ir.actions.act_window">
+        <field name="view_ids" eval="[(5, 0, 0), (0, 0, {'view_mode': 'form', 'view_id': ref('sale_order_crm_form_techservices')})]"/>
+    </record>
+
     <!-- Hide Optional Products tab from Supervisor/Technician -->
 
     <record id="sale_order_form_quote_techservices" model="ir.ui.view">
