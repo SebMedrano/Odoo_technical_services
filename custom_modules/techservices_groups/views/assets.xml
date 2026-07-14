@@ -12,5 +12,17 @@
             <field name="bundle">web.assets_backend</field>
             <field name="path">techservices_groups/static/src/hide_messaging_menu.js</field>
         </record>
+
+        <record id="techservices_chatter_repair_patch_js" model="ir.asset">
+            <field name="name">techservices_groups: chatter repair patch js</field>
+            <field name="bundle">web.assets_backend</field>
+            <field name="path">techservices_groups/static/src/chatter_repair_patch.js</field>
+        </record>
+
+        <record id="techservices_chatter_repair_patch_xml" model="ir.asset">
+            <field name="name">techservices_groups: chatter repair patch xml</field>
+            <field name="bundle">web.assets_backend</field>
+            <field name="path">techservices_groups/static/src/chatter_repair_patch.xml</field>
+        </record>
     </data>
 </odoo>

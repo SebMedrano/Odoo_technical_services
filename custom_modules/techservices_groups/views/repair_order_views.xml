@@ -33,6 +33,9 @@
         <field name="model">repair.order</field>
         <field name="inherit_id" ref="repair.view_repair_order_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="attributes">
+                <attribute name="domain">[('company_ids', 'in', [company_id])]</attribute>
+            </xpath>
             <xpath expr="//field[@name='product_id']" position="attributes">
                 <attribute name="groups">techservices_groups.group_manager</attribute>
             </xpath>
@@ -59,7 +62,7 @@
 
             <!-- Warning banner visible when blocked -->
             <xpath expr="//header" position="after">
-                <div class="alert alert-warning mb-0" invisible="state != 'blocked'">
+                <div class="alert alert-warning mb-0" role="alert" invisible="state != 'blocked'">
                     <strong>Repair is blocked.</strong>
                     Please add the reason for the block in the <strong>Log note</strong> below.
                     E.g. "Waiting for parts", "Waiting for user to provide more information", etc.

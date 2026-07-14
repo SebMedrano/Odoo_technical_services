@@ -9,7 +9,10 @@
         <field name="inherit_id" ref="crm.crm_lead_view_form"/>
         <field name="arch" type="xml">
             <!-- Outer div wrapping Expected Revenue (unique by w-sm-auto class in this form) -->
-            <xpath expr="//div[contains(@class,'w-sm-auto')]" position="attributes">
+            <xpath expr="//field[@name='user_id']" position="attributes">
+                <attribute name="domain">[('company_ids', 'in', [company_id])]</attribute>
+            </xpath>
+            <xpath expr="//div[hasclass('w-sm-auto')]" position="attributes">
                 <attribute name="groups">techservices_groups.group_manager</attribute>
             </xpath>
             <!-- Outer div wrapping Probability (identified by its child div#probability) -->

@@ -8,6 +8,9 @@
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="attributes">
+                <attribute name="domain">[('company_ids', 'in', [company_id])]</attribute>
+            </xpath>
             <xpath expr="//field[@name='payment_term_id']" position="attributes">
                 <attribute name="groups">techservices_groups.group_manager</attribute>
             </xpath>
@@ -40,7 +43,7 @@
             <xpath expr="//notebook" position="before">
                 <group name="repair_info" string="Repair Order" invisible="not x_repair_id">
                     <field name="x_repair_state" readonly="1"/>
-                    <field name="x_repair_user_id"/>
+                    <field name="x_repair_user_id" domain="[('company_ids', 'in', [company_id])]"/>
                 </group>
             </xpath>
         </field>
@@ -60,7 +63,8 @@
                 <field name="x_repair_user_id"
                        string="Repair Responsible"
                        widget="many2one_avatar_user"
-                       optional="show"/>
+                       optional="show"
+                       domain="[('company_ids', 'in', [company_id])]"/>
             </xpath>
         </field>
     </record>

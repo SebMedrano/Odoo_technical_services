@@ -190,7 +190,7 @@
 
                                     <!-- Message -->
                                     <div class="col-12">
-                                        <label class="form-label fw-semibold" for="message">Message</label>
+                                        <label class="form-label fw-semibold" for="message">Description of the issue or request:</label>
                                         <textarea class="form-control" id="message" name="message"
                                             rows="5"><t t-esc="post.get('message', '')"/></textarea>
                                     </div>
@@ -301,7 +301,7 @@
                                             <td colspan="2"><hr class="my-2"/></td>
                                         </tr>
                                         <tr t-if="post.get('message')">
-                                            <td class="fw-semibold">Message</td>
+                                            <td class="fw-semibold" t-esc="'Description of the issue or request:' if form.template == 'ees' else 'Message'"/>
                                             <td style="white-space:pre-wrap" t-esc="post.get('message')"/>
                                         </tr>
                                     </tbody>

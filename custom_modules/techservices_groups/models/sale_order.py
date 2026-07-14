@@ -9,8 +9,8 @@ class SaleOrder(models.Model):
 
     x_repair_id = fields.Many2one(
         'repair.order',
-        compute='_compute_repair_fields',
-        string='Repair Order',
+        compute='_compute_repair_id',
+        string='Linked Repair',
     )
     x_repair_state = fields.Selection(
         [('draft', 'New'), ('confirmed', 'Confirmed'),
@@ -28,11 +28,15 @@ class SaleOrder(models.Model):
         string='Repair Responsible',
     )
 
+    @api.depends('x_repair_ids')
+    def _compute_repair_id(self):
+        for order in self:
+            order.x_repair_id = order.x_repair_ids[:1]
+
     @api.depends('x_repair_ids', 'x_repair_ids.state', 'x_repair_ids.user_id')
     def _compute_repair_fields(self):
         for order in self:
             repair = order.x_repair_ids[:1]
-            order.x_repair_id = repair
             order.x_repair_state = repair.state if repair else False
             order.x_repair_user_id = repair.user_id if repair else False
 

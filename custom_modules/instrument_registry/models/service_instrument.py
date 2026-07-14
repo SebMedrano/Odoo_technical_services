@@ -48,7 +48,7 @@ class ServiceInstrument(models.Model):
     )
 
     document_count = fields.Integer(
-        string='Documents',
+        string='Document Count',
         compute='_compute_document_count',
     )
 

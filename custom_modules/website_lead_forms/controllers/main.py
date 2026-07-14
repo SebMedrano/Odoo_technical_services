@@ -40,7 +40,8 @@ class WebsiteLeadFormController(http.Controller):
         parts = []
         message = post.get('message', '').strip()
         if message:
-            parts.append(f'<strong>Message:</strong><br/>{e(message)}')
+            msg_label = 'Description of the issue or request' if form.template == 'ees' else 'Message'
+            parts.append(f'<strong>{msg_label}:</strong><br/>{e(message)}')
         if form.template == 'ees':
             for label, key in [
                 ("Supervisor / Research Group", 'supervisor_name'),
@@ -95,8 +96,9 @@ class WebsiteLeadFormController(http.Controller):
 
         message = post.get('message', '').strip()
         if message:
+            msg_label = 'Description of the issue or request' if form.template == 'ees' else 'Message'
             rows.append(
-                f'<tr><td style="padding:6px 12px;font-weight:600;vertical-align:top">Message</td>'
+                f'<tr><td style="padding:6px 12px;font-weight:600;vertical-align:top">{e(msg_label)}</td>'
                 f'<td style="padding:6px 12px;vertical-align:top;white-space:pre-wrap">{e(message)}</td></tr>'
             )
 

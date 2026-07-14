@@ -18,7 +18,7 @@ class RepairOrder(models.Model):
     )
 
     sale_order_name = fields.Char(
-        string='Sale Order',
+        string='Sale Order Number',
         compute='_compute_sale_order_name',
         store=False,
     )

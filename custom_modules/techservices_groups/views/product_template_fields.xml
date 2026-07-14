@@ -12,13 +12,18 @@
             <field name="inherit_id" ref="product.product_template_form_view"/>
             <field name="arch" type="xml">
                 <xpath expr="//group[@name='group_general']/field[@name='type']" position="after">
+                    <field name="x_description" placeholder="e.g. Oscilloscope, 100MHz bandwidth" rows="5"/>
                     <field name="x_make" placeholder="e.g. Agilent, Thermo Fisher"/>
                     <field name="x_make_part_number" placeholder="e.g. ABC-1234"/>
                     <field name="x_supplier_id" placeholder="e.g. VWR Scientific"/>
                     <field name="x_supplier_part_number" placeholder="e.g. 12345-678"/>
+                    <field name="x_alt_supplier_id" placeholder="e.g. Fisher Scientific"/>
+                    <field name="x_alt_supplier_part_number" placeholder="e.g. 98765-432"/>
                     <div class="text-muted small fst-italic" colspan="2">
                         Add any additional suppliers in the internal notes section
                     </div>
+                    <field name="x_room_location" placeholder="e.g. Room 101"/>
+                    <field name="x_drawer_location" placeholder="e.g. Drawer A3"/>
                 </xpath>
             </field>
         </record>
@@ -53,11 +58,52 @@
                 <!-- Remove Location and Warehouse fields -->
                 <xpath expr="//field[@name='location_id']" position="replace"/>
                 <xpath expr="//field[@name='warehouse_id']" position="replace"/>
-                <!-- Add Make, Supplier, Supplier Part Number after the existing tag field -->
-                <xpath expr="//field[@name='attribute_line_ids']" position="after">
+                <!-- Add custom search fields after the Tags field (always present, no groups restriction) -->
+                <xpath expr="//field[@name='product_tag_ids']" position="after">
+                    <field name="x_description" string="Product's description"/>
                     <field name="x_make" string="Make"/>
                     <field name="x_supplier_id" string="Supplier" filter_domain="[('x_supplier_id', 'child_of', self)]"/>
                     <field name="x_supplier_part_number" string="Supplier Part Number"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!--
+            Adds 'Date Added' (create_date) and "Product's description" (x_description)
+            as optional columns in the product template list view (action-488).
+        -->
+        <record id="product_template_list_create_date" model="ir.ui.view">
+            <field name="name">product.template.list.create_date.techservices</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_tree_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="x_description" string="Product's description" optional="show"/>
+                </xpath>
+                <xpath expr="//field[@name='uom_id']" position="after">
+                    <field name="create_date" string="Date Added" optional="show" readonly="1"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!--
+            Adds "Product's description" (x_description) to the product kanban card,
+            shown below the price line.
+        -->
+        <record id="product_template_kanban_x_description" model="ir.ui.view">
+            <field name="name">product.template.kanban.x_description.techservices</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_kanban_view"/>
+            <field name="arch" type="xml">
+                <!-- Expose the field to the kanban renderer -->
+                <xpath expr="//kanban/field[@name='categ_id']" position="after">
+                    <field name="x_description"/>
+                </xpath>
+                <!-- Display below the price line -->
+                <xpath expr="//span[field[@name='list_price']]" position="after">
+                    <div t-if="record.x_description.value" class="text-muted small mt-1">
+                        <field name="x_description"/>
+                    </div>
                 </xpath>
             </field>
         </record>

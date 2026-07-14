@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-inherit="mail.Chatter" t-inherit-mode="extension">
+        <!-- Hide "Send message" for Technician/Supervisor on repair.order -->
+        <xpath expr="//button[hasclass('o-mail-Chatter-sendMessage')]" position="attributes">
+            <attribute name="t-if">!isRepairChatterRestricted</attribute>
+        </xpath>
+        <!-- Hide "Activities" for Technician/Supervisor on repair.order -->
+        <xpath expr="//button[hasclass('o-mail-Chatter-activity')]" position="attributes">
+            <attribute name="t-if">props.has_activities and !isRepairChatterRestricted</attribute>
+        </xpath>
+    </t>
+</templates>
