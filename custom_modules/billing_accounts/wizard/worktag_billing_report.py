@@ -56,16 +56,17 @@ class WorktagBillingReportWizard(models.TransientModel):
         worktag_data = {}
         for invoice in invoices:
             worktag = invoice.worktag_id
-            wid = worktag.id
-            if wid not in worktag_data:
-                worktag_data[wid] = {
+            partner = invoice.partner_id.commercial_partner_id
+            key = (worktag.id, partner.id)
+            if key not in worktag_data:
+                worktag_data[key] = {
                     'code': worktag.code or '',
                     'speedchart': worktag.speedchart or '',
-                    'company': worktag.partner_id.name or '',
+                    'company': partner.name or '',
                     'cost_centre': worktag.cost_centre or '',
                     'amount': 0.0,
                 }
-            worktag_data[wid]['amount'] += invoice.amount_total
+            worktag_data[key]['amount'] += invoice.amount_total
 
         rows = sorted(
             worktag_data.values(),

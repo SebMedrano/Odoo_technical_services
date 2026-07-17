@@ -3,6 +3,7 @@
     'version': '18.0.1.0.0',
     'summary': 'Defines Technician, Supervisor and Manager roles for Technical Services',
     'author': 'Your Name',
+    'license': 'LGPL-3',
     'category': 'Technical Services',
     'depends': [
         'base',

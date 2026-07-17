@@ -32,15 +32,16 @@ class ServiceWorktag(models.Model):
         help='Must be checked before an invoice can be created. Only managers can change this.',
     )
 
-    partner_id = fields.Many2one(
+    partner_ids = fields.Many2many(
         comodel_name='res.partner',
-        string='Company',
-        required=True,
-        domain=[('is_company', '=', True)],
-        ondelete='restrict',
+        relation='service_worktag_partner_rel',
+        column1='worktag_id',
+        column2='partner_id',
+        string='Companies',
+        domain=[('is_company', '=', True), ('is_supplier', '=', False)],
     )
 
-    date_created = fields.Datetime(string='Created on', related='create_date', store=False)
+    date_created = fields.Datetime(string='Date Created', related='create_date', store=False)
 
     _sql_constraints = [
         ('unique_code', 'UNIQUE(code)', 'A worktag with this code already exists.'),

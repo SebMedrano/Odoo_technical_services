@@ -9,12 +9,6 @@ class SaleOrderLine(models.Model):
 
     worktag_client_category = fields.Selection(
         related='order_id.worktag_id.client_category',
-        selection=[
-            ('chemistry', 'Chemistry Client'),
-            ('ubc', 'UBC Client'),
-            ('external', 'External/Private Client'),
-            ('department', 'Department Service Client'),
-        ],
         string='Worktag Client Category',
         store=False,
     )

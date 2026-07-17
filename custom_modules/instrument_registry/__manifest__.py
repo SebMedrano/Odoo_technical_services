@@ -3,6 +3,7 @@
     'version': '18.0.4.0.0',
     'summary': 'Registry of instruments and equipment for repair tracking',
     'author': 'Your Name',
+    'license': 'LGPL-3',
     'category': 'Repair',
     'depends': [
         'repair',

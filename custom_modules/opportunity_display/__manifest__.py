@@ -3,6 +3,7 @@
     'version': '18.0.3.0.0',
     'summary': 'Shows opportunity, notes and service type on sale orders, invoices and repair orders',
     'author': 'Your Name',
+    'license': 'LGPL-3',
     'category': 'Sales',
     'depends': [
         'sale_crm',

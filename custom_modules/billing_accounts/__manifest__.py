@@ -3,12 +3,14 @@
     'version': '18.0.6.0.0',
     'summary': 'Adds worktags, billing report and invoice management',
     'author': 'Your Name',
+    'license': 'LGPL-3',
     'category': 'Accounting',
     'depends': [
         'analytic',
         'account',
         'sale',
         'product',
+        'techservices_groups',
     ],
     'data': [
         'security/ir.model.access.csv',

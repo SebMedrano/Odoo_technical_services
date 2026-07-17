@@ -16,13 +16,6 @@ class RepairOrder(models.Model):
     # Service type from the sale order
     service_type = fields.Selection(
         related='sale_order_id.service_type',
-        selection=[
-            ('repair', 'Repair'),
-            ('manufacturing', 'Manufacturing'),
-            ('move', 'Move'),
-            ('installation', 'Installation'),
-            ('maintenance', 'Maintenance'),
-        ],
         string='Service Type',
         readonly=True,
         store=False,

@@ -8,7 +8,7 @@
             <xpath expr="//notebook" position="inside">
                 <page string="Worktags" name="worktags">
                     <field name="worktag_ids">
-                        <list editable="bottom">
+                        <list>
                             <field name="code"/>
                             <field name="name"/>
                             <field name="cost_centre"/>

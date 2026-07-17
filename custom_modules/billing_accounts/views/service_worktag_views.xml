@@ -10,7 +10,7 @@
                 <field name="cost_centre"/>
                 <field name="speedchart"/>
                 <field name="client_category"/>
-                <field name="partner_id"/>
+                <field name="partner_ids" widget="many2many_tags"/>
                 <field name="status" decoration-danger="status == 'inactive'" decoration-success="status == 'active'"/>
                 <field name="validated" widget="boolean" decoration-success="validated == True" decoration-warning="validated == False"/>
                 <field name="date_created" optional="show"/>
@@ -32,7 +32,7 @@
                         </group>
                         <group string="Details">
                             <field name="name"/>
-                            <field name="partner_id"/>
+                            <field name="partner_ids" widget="many2many_tags"/>
                             <field name="client_category"/>
                             <field name="status"/>
                             <field name="validated" groups="base.group_system"/>
@@ -52,7 +52,7 @@
                 <field name="name"/>
                 <field name="speedchart"/>
                 <field name="cost_centre"/>
-                <field name="partner_id"/>
+                <field name="partner_ids"/>
                 <field name="client_category"/>
                 <filter string="Active" name="active" domain="[('status', '=', 'active')]"/>
                 <filter string="Inactive" name="inactive" domain="[('status', '=', 'inactive')]"/>

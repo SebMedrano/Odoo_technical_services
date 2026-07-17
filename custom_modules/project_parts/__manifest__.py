@@ -3,6 +3,7 @@
     'version': '18.0.2.0.0',
     'summary': 'Parts consumption on project tasks with stock moves and SO sync',
     'author': 'Your Name',
+    'license': 'LGPL-3',
     'category': 'Project',
     'depends': [
         'project',

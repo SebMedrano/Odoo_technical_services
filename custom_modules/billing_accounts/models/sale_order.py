@@ -14,14 +14,14 @@ class SaleOrder(models.Model):
     worktag_id = fields.Many2one(
         comodel_name='service.worktag',
         string='Worktag',
-        domain="[('partner_id', '=', worktag_commercial_partner_id)]",
+        domain="[('partner_ids', 'in', [worktag_commercial_partner_id])]",
         tracking=True,
     )
 
     speedchart_id = fields.Many2one(
         comodel_name='service.worktag',
         string='Speedchart',
-        domain="[('partner_id', '=', worktag_commercial_partner_id)]",
+        domain="[('partner_ids', 'in', [worktag_commercial_partner_id])]",
         tracking=True,
         context={'show_speedchart': True},
     )

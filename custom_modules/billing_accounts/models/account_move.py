@@ -13,7 +13,7 @@ class AccountMove(models.Model):
     worktag_id = fields.Many2one(
         comodel_name='service.worktag',
         string='Worktag',
-        domain="[('partner_id', '=', worktag_commercial_partner_id)]",
+        domain="[('partner_ids', 'in', [worktag_commercial_partner_id])]",
         tracking=True,
         copy=False,
     )

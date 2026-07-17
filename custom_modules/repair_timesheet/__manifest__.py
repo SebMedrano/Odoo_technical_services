@@ -3,6 +3,7 @@
     'version': '18.0.6.0.0',
     'summary': 'Adds timesheet tracking to repair orders using native analytic lines',
     'author': 'Your Name',
+    'license': 'LGPL-3',
     'category': 'Repair',
     'depends': [
         'repair',
