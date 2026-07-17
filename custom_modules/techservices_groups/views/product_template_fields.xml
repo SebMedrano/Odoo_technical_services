@@ -79,6 +79,10 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='name']" position="after">
                     <field name="x_description" string="Product's description" optional="show"/>
+                    <field name="x_make" string="Make" optional="show"/>
+                    <field name="x_make_part_number" string="Make Part Number" optional="show"/>
+                    <field name="x_supplier_id" string="Supplier" optional="show"/>
+                    <field name="x_supplier_part_number" string="Supplier Part Number" optional="show"/>
                 </xpath>
                 <xpath expr="//field[@name='uom_id']" position="after">
                     <field name="create_date" string="Date Added" optional="show" readonly="1"/>
