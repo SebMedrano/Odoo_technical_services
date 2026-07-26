@@ -24,5 +24,12 @@
             <field name="bundle">web.assets_backend</field>
             <field name="path">techservices_groups/static/src/chatter_repair_patch.xml</field>
         </record>
+
+        <record id="techservices_action_menu_patch_js" model="ir.asset">
+            <field name="name">techservices_groups: action menu patch js</field>
+            <field name="bundle">web.assets_backend</field>
+            <field name="path">techservices_groups/static/src/action_menu_patch.js</field>
+        </record>
+
     </data>
 </odoo>
