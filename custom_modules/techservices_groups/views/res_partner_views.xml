@@ -19,6 +19,18 @@
             </field>
         </record>
 
+        <!-- Add Department / Unit column to the contacts list view -->
+        <record id="res_partner_list_department_unit" model="ir.ui.view">
+            <field name="name">res.partner.list.department.unit.techservices</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='display_name']" position="after">
+                    <field name="x_department_unit" string="Department / Unit" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+
         <!-- Hide 'Supplier' from the company_type radio on the contact form -->
         <record id="res_partner_form_hide_supplier_type" model="ir.ui.view">
             <field name="name">res.partner.form.hide.supplier.type.techservices</field>
