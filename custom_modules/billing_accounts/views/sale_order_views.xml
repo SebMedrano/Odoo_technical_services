@@ -8,6 +8,7 @@
             <xpath expr="//field[@name='partner_id']" position="after">
                 <field name="worktag_commercial_partner_id" invisible="1"/>
                 <field name="worktag_id" domain="[('partner_ids', 'in', [worktag_commercial_partner_id])]" options="{'no_quick_create': True}"/>
+                <field name="worktag_name" readonly="1" invisible="not worktag_id"/>
                 <field name="speedchart_id" domain="[('partner_ids', 'in', [worktag_commercial_partner_id])]"
                        context="{'show_speedchart': True}" options="{'no_quick_create': True}"/>
             </xpath>

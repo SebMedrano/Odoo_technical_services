@@ -18,6 +18,12 @@ class SaleOrder(models.Model):
         tracking=True,
     )
 
+    worktag_name = fields.Char(
+        related='worktag_id.name',
+        string='Worktag Name',
+        store=False,
+    )
+
     speedchart_id = fields.Many2one(
         comodel_name='service.worktag',
         string='Speedchart',
