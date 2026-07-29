@@ -6,7 +6,13 @@ class ServiceWorktag(models.Model):
     _description = 'Service Worktag'
     _rec_name = 'code'
 
-    name = fields.Char(string='Worktag Name', required=True)
+    name = fields.Char(string='Worktag description', required=True)
+    project_grant_manager_id = fields.Many2one(
+        comodel_name='res.partner',
+        string='Project/Grant Manager (PI)',
+        domain=[('is_company', '=', False)],
+        help='Principal Investigator or project/grant manager responsible for this worktag.',
+    )
     code = fields.Char(string='Worktag Code', required=True)
     cost_centre = fields.Char(string='Cost Centre')
     speedchart = fields.Char(string='Speedchart')

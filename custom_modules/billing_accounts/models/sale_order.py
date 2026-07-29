@@ -20,7 +20,7 @@ class SaleOrder(models.Model):
 
     worktag_name = fields.Char(
         related='worktag_id.name',
-        string='Worktag Name',
+        string='Worktag description',
         store=False,
     )
 

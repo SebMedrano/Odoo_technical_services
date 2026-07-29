@@ -7,6 +7,7 @@
             <list string="Worktags">
                 <field name="code"/>
                 <field name="name"/>
+                <field name="project_grant_manager_id" string="Project/Grant Manager (PI)" optional="show"/>
                 <field name="cost_centre"/>
                 <field name="speedchart"/>
                 <field name="client_category"/>
@@ -32,6 +33,7 @@
                         </group>
                         <group string="Details">
                             <field name="name"/>
+                            <field name="project_grant_manager_id"/>
                             <field name="partner_ids" widget="many2many_tags"/>
                             <field name="client_category"/>
                             <field name="status"/>
@@ -50,6 +52,7 @@
             <search string="Search Worktags">
                 <field name="code"/>
                 <field name="name"/>
+                <field name="project_grant_manager_id"/>
                 <field name="speedchart"/>
                 <field name="cost_centre"/>
                 <field name="partner_ids"/>

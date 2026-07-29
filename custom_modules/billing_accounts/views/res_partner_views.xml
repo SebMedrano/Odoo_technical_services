@@ -11,6 +11,7 @@
                         <list>
                             <field name="code"/>
                             <field name="name"/>
+                            <field name="project_grant_manager_id" string="Project/Grant Manager (PI)" optional="show"/>
                             <field name="cost_centre"/>
                             <field name="speedchart"/>
                             <field name="client_category"/>
